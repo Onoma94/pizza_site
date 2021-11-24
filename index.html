@@ -1,21 +1,42 @@
 <html lang="pl">
-    <head>
-        <meta charset="UTF-8">
-        <title>Pizza Govanni</title>
-        <link rel="stylesheet" href="/static/css/styles.css">
-    </head>
-    <body>
-        <header>
-            Pizza Govanni
-        </header>
-        <div class="pizzae">
+<head>
+    <meta charset="UTF-8">
+    <title>Pizza Govanni</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<script type="text/javascript">
+    var newDiv = null;
+    function listPizzae()
+    {
             
-        </div>
-        <div class="basket">
+        fetch('https://raw.githubusercontent.com/alexsimkovich/patronage/main/api/data.json')
+        .then(response => response.json())
+        .then(data => 
+            data.forEach(pizza => {
+                newDiv = document.createElement("pizza");
+                newDiv.setAttribute("id", pizza.title);
+                newDiv.innerHTML = '<img src="'+pizza.image+'">'
+                    +'<h1>'+pizza.title+'</h1>'
+                    +'<h2>'+pizza.price+' zł</h2>'
+                    +'<p>'+pizza.ingredients+'</p>'
+                    +'<button>Zamów</button>';
+                document.getElementById("pizzae").appendChild(newDiv);
+                console.log(pizza.title);
+            }));
+    }
+</script>
+<body onload="listPizzae()">
+    <header>
+        Pizza Govanni
+    </header>
+    <div id="pizzae">
 
-        </div>
-        <footer>
+    </div>
+    <div id="basket">
 
-        </footer>
-    </body>
+    </div>
+    <footer>
+
+    </footer>
+</body>
 </html>
