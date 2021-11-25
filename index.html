@@ -16,9 +16,9 @@
                 newDiv = document.createElement("pizza");
                 newDiv.setAttribute("id", pizza.title);
                 newDiv.innerHTML = '<img src="'+pizza.image+'">'
-                    +'<h1>'+pizza.title+'</h1>'
-                    +'<h2>'+pizza.price+' zł</h2>'
-                    +'<p>'+pizza.ingredients+'</p>'
+                    +'<div class="title-price"><div class="title">'+pizza.title+'</div>'
+                    +'<div class="price">'+pizza.price+' zł</div></div>'
+                    +'<ingr>'+pizza.ingredients+'</ingr>'
                     +'<button>Zamów</button>';
                 document.getElementById("pizzae").appendChild(newDiv);
                 console.log(pizza.title);
