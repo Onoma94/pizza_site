@@ -12,6 +12,7 @@ header
 #pizzae
 {
     table-layout: fixed;
+    float: left;
     flex-wrap: wrap;
     display: flex;
 }
