@@ -38,8 +38,8 @@
         var newDiv = null;
         const basket = document.getElementById("basket");
         var id = e.parentNode.id;
-        var title = e.parentNode.querySelector("div.title-price div.title");
-        var price = e.parentNode.querySelector("div.title-price div.price");
+        var title = e.parentNode.querySelector("div.title-price div.title").innerHTML;
+        var price = e.parentNode.querySelector("div.title-price div.price").innerHTML;
         var count = 1;
         console.log(id);
         console.log("twoja stara");
@@ -52,10 +52,12 @@
                 + '<div class="order-count">' +count+ '</div>';
             document.getElementById("basket").appendChild(newDiv);
         }
-        /*else
+        else
         {
-            document.getElementById("O"+id).querySelector("div.order-count");
-        }*/
+            var count = document.getElementById("O"+id).querySelector("div.order-count").innerHTML;
+            count++;
+            document.getElementById("O"+id).querySelector("div.order-count").innerHTML = count;
+        }
     }
 </script>
 <body onload="listPizzae()">
