@@ -26,10 +26,35 @@
                     +'<div class="title-price"><div class="title">'+pizza.title+'</div>'
                     +'<div class="price">'+pizza.price+' zł</div></div>'
                     +'<ingr>'+ingredients1+'</ingr>'
-                    +'<button>Zamów</button>';
+                    +'<button onClick="addPizza(this)">Zamów</button>';
                 document.getElementById("pizzae").appendChild(newDiv);
                 console.log(pizza.title);
             }));
+    }
+</script>
+<script>
+    function addPizza(e)
+    {
+        var newDiv = null;
+        const basket = document.getElementById("basket");
+        var id = e.parentNode.id;
+        var title = e.parentNode.querySelector("div.title-price div.title");
+        var price = e.parentNode.querySelector("div.title-price div.price");
+
+        console.log(id);
+        console.log("twoja stara");
+        if(!(document.getElementById("O"+id)))
+        {
+            newDiv = document.createElement("order");
+            newDiv.setAttribute("id", "O"+title);
+            newDiv.innerHTML = '<div class="order-title">'+title+'</div>'
+                + '<div class="order-price">'+price+'</div>'
+                + '<div class="order-count">' +count+ '</div>';
+        }
+        /*else
+        {
+            document.getElementById("O"+id).querySelector("div.order-count");
+        }*/
     }
 </script>
 <body onload="listPizzae()">
