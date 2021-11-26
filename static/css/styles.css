@@ -1,6 +1,7 @@
 body{
     font-family: Arial, Helvetica, sans-serif;
     background-color: #eda55f;
+    display: inline-block;
 }
 
 header
@@ -17,7 +18,9 @@ header
 
 #basket
 {
-
+    width: 400px;
+    position: fixed;
+    background-color: #600000;
 }
 
 pizza
