@@ -15,10 +15,17 @@
             data.forEach(pizza => {
                 newDiv = document.createElement("pizza");
                 newDiv.setAttribute("id", pizza.title);
+                var ingredients1 = "";
+                pizza.ingredients.forEach(ingredient =>
+                    {
+                        ingredients1 = ingredients1 + ingredient + ", ";
+                    }
+                );
+                ingredients1 = ingredients1.slice(0,-2)
                 newDiv.innerHTML = '<img src="'+pizza.image+'">'
                     +'<div class="title-price"><div class="title">'+pizza.title+'</div>'
                     +'<div class="price">'+pizza.price+' zł</div></div>'
-                    +'<ingr>'+pizza.ingredients+'</ingr>'
+                    +'<ingr>'+ingredients1+'</ingr>'
                     +'<button>Zamów</button>';
                 document.getElementById("pizzae").appendChild(newDiv);
                 console.log(pizza.title);
