@@ -52,6 +52,11 @@
                 + '<div class="order-count">' +count+ '</div>'
                 + '<div class="order-delete">×</div>';
             document.getElementById("orders").appendChild(newDiv);
+            if(!!document.getElementById("basket-empty"))
+            {
+                var basket_empty = document.getElementById("basket-empty");
+                basket_empty.parentNode.removeChild(basket_empty);
+            }
         }
         else
         {
