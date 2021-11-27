@@ -86,27 +86,52 @@ button{
 }
 
 orders{
-
+    margin: 4px;
 }
 
 order{
-
+    border-radius: .5rem .5rem .5rem .5rem;
+    background-color: #eda55f;
+    height: 2rem;
+    padding: 1rem;
+    margin: 4px;
+    display: inline-block;
 }
 
 .order-title{
-
+    width: 200px;
+    color: #ffffff;
+    display: inline-block;
 }
 
 .order-price{
-
+    width: 80px;
+    color: #ffffff;
+    display: inline-block;
 }
 
 .order-count{
-
+    width: 30px;
+    background-color: #ffffff;
+    color: #000000;
+    text-align: right;
+    padding-right: 2px;
+    display: inline-block;
 }
 
 .order-delete{
-    
+    width: 28px;
+    font-weight: 800;
+    text-align: center;
+    background-color: #ff0000;
+    color: #ffffff;
+    display: inline-block;
+    margin-left: 10px;
+    margin-right: 0px;
+}
+
+.basket-price{
+
 }
 
 footer
