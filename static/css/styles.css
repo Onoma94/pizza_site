@@ -26,7 +26,6 @@ header
     min-height: 400px;
     float: right;
     background-color: #600000;
-    display: grid;
 }
 
 pizza
@@ -85,14 +84,15 @@ button{
     margin: 20px;
 }
 
-orders{
+#orders{
     margin: 4px;
+    display: grid;
 }
 
 order{
     border-radius: .5rem .5rem .5rem .5rem;
     background-color: #eda55f;
-    height: 2rem;
+    height: 1.5rem;
     padding: 1rem;
     margin: 4px;
     display: inline-block;

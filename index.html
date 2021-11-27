@@ -36,7 +36,7 @@
     function addPizza(e)
     {
         var newDiv = null;
-        const basket = document.getElementById("basket");
+        const basket = document.getElementById("orders");
         var id = e.parentNode.id;
         var title = e.parentNode.querySelector("div.title-price div.title").innerHTML;
         var price = e.parentNode.querySelector("div.title-price div.price").innerHTML;
@@ -51,7 +51,7 @@
                 + '<div class="order-price">'+price+'</div>'
                 + '<div class="order-count">' +count+ '</div>'
                 + '<div class="order-delete">×</div>';
-            document.getElementById("basket").appendChild(newDiv);
+            document.getElementById("orders").appendChild(newDiv);
         }
         else
         {
@@ -66,9 +66,16 @@
         Pizza Govanni
     </header>
     <div id="basket">
+        <div id="basket-header">Twój koszyk</div>
+        <div id="orders">
+            <div id="basket-empty">Głodny? Zamów naszą pizzę</div>
+        </div>
+        <div id="basket-price">
+            <div id="basket-price-text">Razem</div>
+            <div id="pasket-price-number"></div>
+        </div>
     </div>
     <div id="pizzae">
-
     </div>
     <footer>
 
