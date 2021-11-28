@@ -50,12 +50,12 @@
             newDiv.innerHTML = '<div class="order-title">'+title+'</div>'
                 + '<div class="order-price">'+price+'</div>'
                 + '<div class="order-count">' +count+ '</div>'
-                + '<div class="order-delete">×</div>';
+                + '<div class="order-delete" onClick="removePizza(this);calculateOrders()">×</div>';
             document.getElementById("orders").appendChild(newDiv);
             if(!!document.getElementById("basket-empty"))
             {
                 var basket_empty = document.getElementById("basket-empty");
-                basket_empty.parentNode.removeChild(basket_empty);
+                basket_empty.style.display = "none";
                 var basket_price = document.getElementById("basket-price");
                 basket_price.style.display = "block";
             }
@@ -83,6 +83,27 @@
             total_price = total_price + a*b;
         }
         document.getElementById("basket-price-number").innerHTML = total_price.toFixed(1)+" zł";
+    }
+</script>
+<script type="text/javascript">
+    function removePizza(e)
+    {
+        var count = parseInt(e.parentNode
+            .querySelector("div.order-count").innerHTML);
+        count--;
+        e.parentNode.querySelector("div.order-count").innerHTML = count;
+        if (!count)
+        {
+            let id = e.parentNode;
+            id.parentNode.removeChild(id);
+            if (document.getElementsByClassName("order").length < 1)
+            {
+                var basket_empty = document.getElementById("basket-empty");
+                basket_empty.style.display = "block";
+                var basket_price = document.getElementById("basket-price");
+                basket_price.style.display = "none";
+            }
+        }
     }
 </script>
 <body onload="listPizzae()">

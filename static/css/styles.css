@@ -175,8 +175,10 @@ order{
     width: 28px;
     font-weight: 800;
     text-align: center;
-    background-color: #ff0000;
+    border-radius: .5rem .5rem .5rem .5rem;
+    background-color: #D00000;
     display: inline-block;
+    cursor: pointer;
     margin-left: 10px;
     margin-right: 0px;
 }
