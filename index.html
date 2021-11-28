@@ -91,7 +91,7 @@
         {
             let id = e.parentNode;
             id.parentNode.removeChild(id);
-            if (document.getElementsByClassName("order").length < 1)
+            if (document.getElementsByTagName("order").length < 1)
             {
                 var basket_empty = document.getElementById("basket-empty");
                 basket_empty.style.display = "block";
