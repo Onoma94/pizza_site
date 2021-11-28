@@ -187,5 +187,9 @@ order{
 
 footer
 {
-
+    background-color: #ad652f;
+    color: #ffffff;
+    font-size: 12px;
+    text-align: center;
+    padding: 2px;
 }
