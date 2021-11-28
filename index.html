@@ -7,8 +7,7 @@
 <script type="text/javascript">
     var newDiv = null;
     function listPizzae()
-    {
-            
+    {        
         fetch('https://raw.githubusercontent.com/alexsimkovich/patronage/main/api/data.json')
         .then(response => response.json())
         .then(data => 
@@ -24,11 +23,10 @@
                 ingredients1 = ingredients1.slice(0,-2)
                 newDiv.innerHTML = '<img src="'+pizza.image+'">'
                     +'<div class="title-price"><div class="title">'+pizza.title+'</div>'
-                    +'<div class="price">'+pizza.price+' zł</div></div>'
+                    +'<div class="price">'+(pizza.price).toLocaleString("pl-PL")+'0 zł</div></div>'
                     +'<ingr>'+ingredients1+'</ingr>'
                     +'<button onClick="addPizza(this);calculateOrders()">Zamów</button>';
                 document.getElementById("pizzae").appendChild(newDiv);
-                console.log(pizza.title);
             }));
     }
 </script>
@@ -41,8 +39,6 @@
         var title = e.parentNode.querySelector("div.title-price div.title").innerHTML;
         var price = e.parentNode.querySelector("div.title-price div.price").innerHTML;
         var count = 1;
-        console.log(id);
-        console.log("twoja stara");
         if(!(document.getElementById("O"+id)))
         {
             newDiv = document.createElement("order");
@@ -71,18 +67,17 @@
 <script type="text/javascript">
     function calculateOrders()
     {
-        console.log("kalkulator");
         var total_price = 0;
         var a, b;
         var prices = document.getElementsByClassName("order-price");
         var counts = document.getElementsByClassName("order-count");
         for (let index = 0; index < prices.length; index++) 
         {
-            a = parseFloat(prices[index].innerHTML.replace(" zł",""));
+            a = parseFloat(prices[index].innerHTML.replace(",",".").replace(" zł",""));
             b = parseInt(counts[index].innerHTML);
             total_price = total_price + a*b;
         }
-        document.getElementById("basket-price-number").innerHTML = total_price.toFixed(1)+" zł";
+        document.getElementById("basket-price-number").innerHTML = total_price.toFixed(1).replace(".",",")+"0 zł";
     }
 </script>
 <script type="text/javascript">
@@ -117,7 +112,7 @@
         </div>
         <div id="basket-price">
             <div id="basket-price-text">Razem</div>
-            <div id="basket-price-number">0.00 zł</div>
+            <div id="basket-price-number">0,00 zł</div>
         </div>
     </div>
     <div id="pizzae-container">
