@@ -138,6 +138,7 @@ order{
     border-top-width: 1px;
     padding: 1rem;
     margin: 8px;
+    display: none;
 }
 
 #basket-price-text{
