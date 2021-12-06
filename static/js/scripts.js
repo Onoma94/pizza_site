@@ -1,10 +1,15 @@
-function removeFromLocalStorage(pizza)
-{
-    localStorage.removeItem(pizza);
-}
+/* clears orders (and by extension local storage) */
 function clearOrders()
 {
     localStorage.clear();
+    document.querySelectorAll('order').forEach(order => order.remove());
+    if (document.getElementsByTagName("order").length < 1)
+    {
+        var basket_empty = document.getElementById("basket-empty");
+        basket_empty.style.display = "block";
+        var basket_price = document.getElementById("basket-price");
+        basket_price.style.display = "none";
+    }
 }
 
 /* reloads the orders after page reload or refresh */

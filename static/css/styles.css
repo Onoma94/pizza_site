@@ -146,14 +146,20 @@ order{
 }
 
 #basket-price-text{
-    width: 190px;
+    width: 180px;
     display: inline-block;
 }
 
 #basket-price-number{
-    width: 100px;
+    width: 80px;
     display: inline-block;
     font-weight: 800;
+}
+
+#basket-clear{
+    width: 90px;
+    margin-left: 0px;
+    margin-right: -20px;
 }
 
 .order-title{
