@@ -1,4 +1,4 @@
-const { elementType } = require("prop-types");
+"use strict";
 
 /* clears orders (and by extension local storage) */
 function clearOrders()
@@ -166,6 +166,7 @@ function sortPizza90()
 /* listing available pizzae in the menu */
 async function listPizzae()
 {
+    var newDiv;
     var pizzae = await loadPizzae('https://raw.githubusercontent.com/alexsimkovich/patronage/main/api/data.json');
     pizzae = pizzae.sort(sortPizza);
     pizzae.forEach(pizza => {
@@ -280,7 +281,7 @@ function calculateOrders()
 /* filtering menu items by ingredients */
 function filter()
 {
-    var check;
+    var check, ingr;
     var pizzae = document.getElementById("pizzae");
     var ingredients = document.getElementById("ingredients").value
         .split(', ');

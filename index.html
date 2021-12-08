@@ -27,7 +27,7 @@
         <button class="sort" onclick="sortPizza90()">(od najdroższej)</button>
         <form>
             <label for="ingredients">Filtruj składniki</label>
-            <input type="text" id="ingredients" name="ingredients" onchange="filter()">
+            <input type="text" id="ingredients" name="ingredients" oninput="filter()">
             <input type="hidden" id="hingredients" name="hingredients">
         </form>
         <div id="pizzae"></div>
