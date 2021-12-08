@@ -34,15 +34,35 @@ function fillOrders()
     }
 }
 
-/* listing available pizzae in the menu */
-function listPizzae()
+/* loads pizzae from the JSON and returns ready array of pizza objects */
+async function loadPizzae(url)
 {
-    var newDiv = null;
-    
-    fetch('https://raw.githubusercontent.com/alexsimkovich/patronage/main/api/data.json')
-    .then(response => response.json())
-    .then(data => 
-        data.forEach(pizza => {
+    const response = await fetch(url);
+    const pizzae = await response.json();
+    //localStorage.setItem("pizzae", JSON.stringify(pizzae));
+    return pizzae;
+}
+
+/* initial menu items sorting; called in listPizzae() */
+function sortPizza(a, b)
+{
+    if (a.title < b.title)
+    {
+        return -1;
+    }
+    if (a.title > b.title)
+    {
+        return 1;
+    }
+    return 0;
+}
+
+/* listing available pizzae in the menu */
+async function listPizzae()
+{
+    var pizzae = await loadPizzae('https://raw.githubusercontent.com/alexsimkovich/patronage/main/api/data.json');
+    pizzae = pizzae.sort(sortPizza);
+    pizzae.forEach(pizza => {
             newDiv = document.createElement("pizza");
             newDiv.setAttribute("id", pizza.title);
             var ingredients1 = "";
@@ -58,8 +78,8 @@ function listPizzae()
                 +'<ingr>'+ingredients1+'</ingr>'
                 +'<button onClick="addPizzaButton(this);calculateOrders()">Zamów</button>';
             document.getElementById("pizzae").appendChild(newDiv);
-        }))
-        .then(fillOrders());
+        });
+    fillOrders();
 }
 
 /* adds a div with pizza to the orders */
