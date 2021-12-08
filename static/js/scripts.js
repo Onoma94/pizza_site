@@ -57,6 +57,110 @@ function sortPizza(a, b)
     return 0;
 }
 
+function sortPizzaAZ()
+{
+    var pizzae = document.getElementById("pizzae");
+    var run = true;
+    var stop, pizzae1;
+    while(run)
+    {
+        run = false;
+        pizzae1 = pizzae.getElementsByTagName("pizza");
+        for (var i = 0; i < (pizzae1.length - 1); i++)
+        {
+            stop = false;
+            if (pizzae1[i].querySelector("div.title-price div.title").innerHTML.toLowerCase() > 
+            pizzae1[i + 1].querySelector("div.title-price div.title").innerHTML.toLowerCase()){
+                    stop = true;
+                    break;
+                    }
+        }
+        if (stop)
+        {
+            pizzae1[i].parentNode.insertBefore(pizzae1[i + 1], pizzae1[i]);
+            run = true;
+        }
+    }
+}
+
+function sortPizzaZA()
+{
+    var pizzae = document.getElementById("pizzae");
+    var run = true;
+    var stop, pizzae1;
+    while(run)
+    {
+        run = false;
+        pizzae1 = pizzae.getElementsByTagName("pizza");
+        for (var i = 0; i < (pizzae1.length - 1); i++)
+        {
+            stop = false;
+            if (pizzae1[i].querySelector("div.title-price div.title").innerHTML.toLowerCase() < 
+                    pizzae1[i + 1].querySelector("div.title-price div.title").innerHTML.toLowerCase()){
+                    stop = true;
+                    break;
+                    }
+        }
+        if (stop)
+        {
+            pizzae1[i].parentNode.insertBefore(pizzae1[i + 1], pizzae1[i]);
+            run = true;
+        }
+    }
+}
+
+function sortPizza09()
+{
+    var pizzae = document.getElementById("pizzae");
+    var run = true;
+    var stop, pizzae1;
+    while(run)
+    {
+        run = false;
+        pizzae1 = pizzae.getElementsByTagName("pizza");
+        for (var i = 0; i < (pizzae1.length - 1); i++)
+        {
+            stop = false;
+            if (pizzae1[i].querySelector("div.title-price div.price").innerHTML.toLowerCase() > 
+            pizzae1[i + 1].querySelector("div.title-price div.price").innerHTML.toLowerCase()){
+                    stop = true;
+                    break;
+                    }
+        }
+        if (stop)
+        {
+            pizzae1[i].parentNode.insertBefore(pizzae1[i + 1], pizzae1[i]);
+            run = true;
+        }
+    }
+}
+
+function sortPizza90()
+{
+    var pizzae = document.getElementById("pizzae");
+    var run = true;
+    var stop, pizzae1;
+    while(run)
+    {
+        run = false;
+        pizzae1 = pizzae.getElementsByTagName("pizza");
+        for (var i = 0; i < (pizzae1.length - 1); i++)
+        {
+            stop = false;
+            if (pizzae1[i].querySelector("div.title-price div.price").innerHTML.toLowerCase() < 
+                    pizzae1[i + 1].querySelector("div.title-price div.price").innerHTML.toLowerCase()){
+                    stop = true;
+                    break;
+                    }
+        }
+        if (stop)
+        {
+            pizzae1[i].parentNode.insertBefore(pizzae1[i + 1], pizzae1[i]);
+            run = true;
+        }
+    }
+}
+
 /* listing available pizzae in the menu */
 async function listPizzae()
 {
