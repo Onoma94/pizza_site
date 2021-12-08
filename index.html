@@ -21,10 +21,15 @@
         </div>
     </div>
     <div id="pizzae-container">
-        <button onclick="sortPizzaAZ()">Sortuj wg nazwy (A-Z)</button>
-        <button onclick="sortPizzaZA()">(Z-A)</button>
-        <button onclick="sortPizza09()">Sortuj wg ceny (od najtańszej)</button>
-        <button onclick="sortPizza90()">(od najdroższej)</button>
+        <button class="sort" onclick="sortPizzaAZ()">Sortuj wg nazwy (A-Z)</button>
+        <button class="sort" onclick="sortPizzaZA()">(Z-A)</button>
+        <button class="sort" onclick="sortPizza09()">Sortuj wg ceny (od najtańszej)</button>
+        <button class="sort" onclick="sortPizza90()">(od najdroższej)</button>
+        <form>
+            <label for="ingredients">Filtruj składniki</label>
+            <input type="text" id="ingredients" name="ingredients" onchange="filter()">
+            <input type="hidden" id="hingredients" name="hingredients">
+        </form>
         <div id="pizzae"></div>
     </div>
     <footer>

@@ -1,3 +1,5 @@
+const { elementType } = require("prop-types");
+
 /* clears orders (and by extension local storage) */
 function clearOrders()
 {
@@ -273,4 +275,43 @@ function calculateOrders()
         total_price = total_price + a*b;
     }
     document.getElementById("basket-price-number").innerHTML = total_price.toFixed(1).replace(".",",")+"0 zł";
+}
+
+/* filtering menu items by ingredients */
+function filter()
+{
+    var check;
+    var pizzae = document.getElementById("pizzae");
+    var ingredients = document.getElementById("ingredients").value
+        .split(', ');
+    var pizzae1 = pizzae.getElementsByTagName("pizza");
+    for(var i= 0; i < pizzae1.length; i++)
+    {
+        pizzae1[i].style.display = "inline-block";
+    }
+    if (!(ingredients[0] == ""))
+    {
+        console.log("Lubisz to, suko");
+        console.log(ingredients);
+        for (var i = 0; i < pizzae1.length; i++)
+        {
+            check = true;
+            ingr = pizzae1[i].querySelector("ingr").innerText.split(', ');
+            ingredients.forEach( ingredient =>
+                check = check && ingr.find(element => { 
+                    if(element.includes(ingredient))
+                    {
+                        return true;
+                    }
+                }));
+            if(!check)
+            {
+                pizzae1[i].style.display = "none";
+            }
+            else
+            {
+                pizzae1[i].style.display = "inline-block";
+            }
+        }
+    }
 }
