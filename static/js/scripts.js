@@ -214,11 +214,6 @@ function addPizzaElement(pizza, count)
 /* adds a pizza from the button in menu to the orders */
 function addPizzaButton(button)
 {
-    
-    //const basket = document.getElementById("orders");
-    
-    //var title = button.parentNode.querySelector("div.title-price div.title").innerHTML;
-    //var price = button.parentNode.querySelector("div.title-price div.price").innerHTML;
     var title = button.parentNode.id;
     var count = 1;
     if(!(document.getElementById("Ó"+title)))
@@ -292,8 +287,6 @@ function filter()
     }
     if (!(ingredients[0] == ""))
     {
-        console.log("Lubisz to, suko");
-        console.log(ingredients);
         for (var i = 0; i < pizzae1.length; i++)
         {
             check = true;
