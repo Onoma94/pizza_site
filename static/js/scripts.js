@@ -278,7 +278,7 @@ function filter()
 {
     var check, ingr;
     var pizzae = document.getElementById("pizzae");
-    var ingredients = document.getElementById("ingredients").value
+    var ingredients = document.getElementById("ingredients").value.toLowerCase()
         .split(', ');
     var pizzae1 = pizzae.getElementsByTagName("pizza");
     for(var i= 0; i < pizzae1.length; i++)
