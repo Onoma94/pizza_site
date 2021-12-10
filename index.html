@@ -16,23 +16,23 @@
     };
  };
 </script>
-<body onload="listPizzae()">
+<body onload="listMenuItems()">
     <header>
         Pizza Govanni
-        <a href="javascript:void(0);" id="hidden-basket" onclick="basketResponse()">Twój koszyk</a>
+        <a href="javascript:void(0);" id="hidden-basket" onclick="showMobileBasket()">Twój koszyk</a>
     </header>
     <div id="basket">
         <div id="basket-header">Twój koszyk</div>
-        <div id="orders" onload="fillOrders()">
-            <div id="basket-empty">Głodny? Zamów naszą pizzę 🍕</div>
+        <div id="basket-items">
+            <div id="basket-placeholder">Głodny? Zamów naszą pizzę 🍕</div>
         </div>
-        <div id="basket-price">
-            <div id="basket-price-text">Razem</div>
-            <div id="basket-price-number">0,00 zł</div>
-            <button id="basket-clear" onclick="clearOrders()">Wyczyść</div>
+        <div id="basket-summary">
+            <div id="basket-summary-text">Razem</div>
+            <div id="basket-summary-number">0,00 zł</div>
+            <button id="basket-clear" onclick="clearBasket()">Wyczyść</div>
         </div>
     </div>
-    <div id="pizzae-container">
+    <div id="menu">
         <div id="filters">
             <button class="sort" onclick="sortPizzaAZ()">Sortuj wg nazwy (A-Z)</button>
             <button class="sort" onclick="sortPizzaZA()">(Z-A)</button>
@@ -42,9 +42,8 @@
         <form>
             <label for="ingredients">Filtruj składniki</label>
             <input type="text" id="ingredients" name="ingredients" oninput="filter()">
-            <input type="hidden" id="hingredients" name="hingredients">
         </form>
-        <div id="pizzae"></div>
+        <div id="menu-items"></div>
     </div>
     <footer>
         by Pizza Govanni 2021

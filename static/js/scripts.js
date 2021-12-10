@@ -1,21 +1,21 @@
 "use strict";
 
-/* clears orders (and by extension local storage) */
-function clearOrders()
+/* clears basket (and by extension local storage) */
+function clearBasket()
 {
     localStorage.clear();
-    document.querySelectorAll('order').forEach(order => order.remove());
-    if (document.getElementsByTagName("order").length < 1)
+    document.querySelectorAll('basket-item').forEach(item => item.remove());
+    if (document.getElementsByTagName("basket-item").length < 1)
     {
-        var basket_empty = document.getElementById("basket-empty");
+        var basket_empty = document.getElementById("basket-placeholder");
         basket_empty.style.display = "block";
-        var basket_price = document.getElementById("basket-price");
+        var basket_price = document.getElementById("basket-placeholder");
         basket_price.style.display = "none";
     }
 }
 
-/* reloads the orders after page reload or refresh */
-function fillOrders()
+/* reloads the basket after page reload or refresh */
+function fillBasket()
 {
     if(localStorage.length == 0)
     {        /* do nothing */    }
@@ -28,14 +28,14 @@ function fillOrders()
             var title = stored_keys[i].substring(1);
             if(!(document.getElementById(stored_keys[i])))
             {
-                addPizzaElement(document.getElementById(title), localStorage.getItem(stored_keys[i]));
+                addBasketItem(document.getElementById(title), localStorage.getItem(stored_keys[i]));
             }
         }
     }
 }
 
 /* loads pizzae from the JSON and returns ready array of pizza objects */
-async function loadPizzae(url)
+async function loadMenuItems(url)
 {
     const response = await fetch(url);
     const pizzae = await response.json();
@@ -43,7 +43,7 @@ async function loadPizzae(url)
 }
 
 /* initial menu items sorting; called in listPizzae() */
-function sortPizza(a, b)
+function sortMenuItems(a, b)
 {
     if (a.title < b.title)
     {
@@ -58,13 +58,13 @@ function sortPizza(a, b)
 
 function sortPizzaAZ()
 {
-    var pizzae = document.getElementById("pizzae");
+    var pizzae = document.getElementById("menu-items");
     var run = true;
     var stop, pizzae1;
     while(run)
     {
         run = false;
-        pizzae1 = pizzae.getElementsByTagName("pizza");
+        pizzae1 = pizzae.getElementsByTagName("menu-item");
         for (var i = 0; i < (pizzae1.length - 1); i++)
         {
             stop = false;
@@ -84,13 +84,13 @@ function sortPizzaAZ()
 
 function sortPizzaZA()
 {
-    var pizzae = document.getElementById("pizzae");
+    var pizzae = document.getElementById("menu-items");
     var run = true;
     var stop, pizzae1;
     while(run)
     {
         run = false;
-        pizzae1 = pizzae.getElementsByTagName("pizza");
+        pizzae1 = pizzae.getElementsByTagName("menu-item");
         for (var i = 0; i < (pizzae1.length - 1); i++)
         {
             stop = false;
@@ -110,13 +110,13 @@ function sortPizzaZA()
 
 function sortPizza09()
 {
-    var pizzae = document.getElementById("pizzae");
+    var pizzae = document.getElementById("menu-items");
     var run = true;
     var stop, pizzae1;
     while(run)
     {
         run = false;
-        pizzae1 = pizzae.getElementsByTagName("pizza");
+        pizzae1 = pizzae.getElementsByTagName("menu-item");
         for (var i = 0; i < (pizzae1.length - 1); i++)
         {
             stop = false;
@@ -136,13 +136,13 @@ function sortPizza09()
 
 function sortPizza90()
 {
-    var pizzae = document.getElementById("pizzae");
+    var pizzae = document.getElementById("menu-items");
     var run = true;
     var stop, pizzae1;
     while(run)
     {
         run = false;
-        pizzae1 = pizzae.getElementsByTagName("pizza");
+        pizzae1 = pizzae.getElementsByTagName("menu-item");
         for (var i = 0; i < (pizzae1.length - 1); i++)
         {
             stop = false;
@@ -161,13 +161,13 @@ function sortPizza90()
 }
 
 /* listing available pizzae in the menu */
-async function listPizzae()
+async function listMenuItems()
 {
     var newDiv;
-    var pizzae = await loadPizzae('https://raw.githubusercontent.com/alexsimkovich/patronage/main/api/data.json');
-    pizzae = pizzae.sort(sortPizza);
+    var pizzae = await loadMenuItems('https://raw.githubusercontent.com/alexsimkovich/patronage/main/api/data.json');
+    pizzae = pizzae.sort(sortMenuItems);
     pizzae.forEach(pizza => {
-            newDiv = document.createElement("pizza");
+            newDiv = document.createElement("menu-item");
             newDiv.setAttribute("id", pizza.title);
             var ingredients1 = "";
             pizza.ingredients.forEach(ingredient =>
@@ -180,32 +180,30 @@ async function listPizzae()
                 +'<div class="title-price"><div class="title">'+pizza.title+'</div>'
                 +'<div class="price">'+(pizza.price).toLocaleString("pl-PL")+'0 zł</div></div>'
                 +'<ingr>'+ingredients1+'</ingr>'
-                +'<button onClick="addPizzaButton(this);calculateOrders()">Zamów</button>';
-            document.getElementById("pizzae").appendChild(newDiv);
+                +'<button onClick="addPizzaButton(this);calculateBasket()">Zamów</button>';
+            document.getElementById("menu-items").appendChild(newDiv);
         });
-    console.log("aaaa");
-    fillOrders();
-    console.log("bbbb");
+    fillBasket();
 }
 
 /* adds a div with pizza to the orders */
 /* the arguments are: the menu <pizza> element, and how many pizzae of this kind is being ordered */
-function addPizzaElement(pizza, count)
+function addBasketItem(pizza, count)
 {
     var title = pizza.querySelector("div.title-price div.title").innerHTML;
     var price = pizza.querySelector("div.title-price div.price").innerHTML;
-        let newDiv = document.createElement("order");
+        let newDiv = document.createElement("basket-item");
         newDiv.setAttribute("id", "Ó"+title);
-        newDiv.innerHTML = '<div class="order-title">'+title+'</div>'
-            + '<div class="order-price">'+price+'</div>'
-            + '<div class="order-count">' +count+ '</div>'
-            + '<div class="order-delete" onClick="removePizzaElement(this);calculateOrders()">×</div>';
-        document.getElementById("orders").appendChild(newDiv);
-        if(!!document.getElementById("basket-empty"))
+        newDiv.innerHTML = '<div class="basket-item-title">'+title+'</div>'
+            + '<div class="basket-item-price">'+price+'</div>'
+            + '<div class="basket-item-count">' +count+ '</div>'
+            + '<div class="basket-item-delete" onClick="removeBasketItem(this);calculateBasket()">×</div>';
+        document.getElementById("basket-items").appendChild(newDiv);
+        if(!!document.getElementById("basket-placeholder"))
         {
-            var basket_empty = document.getElementById("basket-empty");
+            var basket_empty = document.getElementById("basket-placeholder");
             basket_empty.style.display = "none";
-            var basket_price = document.getElementById("basket-price");
+            var basket_price = document.getElementById("basket-summary");
             basket_price.style.display = "block";
         }
 }
@@ -217,35 +215,35 @@ function addPizzaButton(button)
     var count = 1;
     if(!(document.getElementById("Ó"+title)))
     {
-        addPizzaElement(button.parentNode, count);
+        addBasketItem(button.parentNode, count);
         localStorage.setItem("Ó"+title, 1);
     }
     else
     {
-        var count = document.getElementById("Ó"+title).querySelector("div.order-count").innerHTML;
+        var count = document.getElementById("Ó"+title).querySelector("div.basket-item-count").innerHTML;
         count++;
-        document.getElementById("Ó"+title).querySelector("div.order-count").innerHTML = count;
+        document.getElementById("Ó"+title).querySelector("div.basket-item-count").innerHTML = count;
         localStorage.setItem("Ó"+title, count);
     }
 }
 
-/* removes one piece of pizza from the orders */
-function removePizzaElement(button)
+/* removes an item from the basket */
+function removeBasketItem(button)
 {
     var count = parseInt(button.parentNode
-        .querySelector("div.order-count").innerHTML);
+        .querySelector("div.basket-item-count").innerHTML);
     count--;
-    button.parentNode.querySelector("div.order-count").innerHTML = count;
+    button.parentNode.querySelector("div.basket-item-count").innerHTML = count;
     if (!count)
     {
         let order = button.parentNode;
         order.parentNode.removeChild(order);
         localStorage.removeItem(order);
-        if (document.getElementsByTagName("order").length < 1)
+        if (document.getElementsByTagName("basket-item").length < 1)
         {
-            var basket_empty = document.getElementById("basket-empty");
+            var basket_empty = document.getElementById("basket-placeholder");
             basket_empty.style.display = "block";
-            var basket_price = document.getElementById("basket-price");
+            var basket_price = document.getElementById("basket-summary");
             basket_price.style.display = "none";
         }
     }
@@ -257,29 +255,29 @@ function removePizzaElement(button)
 
 
 /* calculating the total cost of the orders */
-function calculateOrders()
+function calculateBasket()
 {
     var total_price = 0;
     var a, b;
-    var prices = document.getElementsByClassName("order-price");
-    var counts = document.getElementsByClassName("order-count");
+    var prices = document.getElementsByClassName("basket-item-price");
+    var counts = document.getElementsByClassName("basket-item-count");
     for (let index = 0; index < prices.length; index++) 
     {
         a = parseFloat(prices[index].innerHTML.replace(",",".").replace(" zł",""));
         b = parseInt(counts[index].innerHTML);
         total_price = total_price + a*b;
     }
-    document.getElementById("basket-price-number").innerHTML = total_price.toFixed(1).replace(".",",")+"0 zł";
+    document.getElementById("basket-summary-number").innerHTML = total_price.toFixed(1).replace(".",",")+"0 zł";
 }
 
 /* filtering menu items by ingredients */
 function filter()
 {
     var check, ingr;
-    var pizzae = document.getElementById("pizzae");
+    var pizzae = document.getElementById("menu-items");
     var ingredients = document.getElementById("ingredients").value.toLowerCase()
         .split(', ');
-    var pizzae1 = pizzae.getElementsByTagName("pizza");
+    var pizzae1 = pizzae.getElementsByTagName("menu-item");
     for(var i= 0; i < pizzae1.length; i++)
     {
         pizzae1[i].style.display = "inline-block";
@@ -309,8 +307,8 @@ function filter()
     }
 }
 
-/*  */
-function basketResponse()
+/* shows basket after clicking "Twój koszyk" */
+function showMobileBasket()
 {
     var x = document.getElementById("basket");
     x.style.display = "block";

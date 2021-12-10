@@ -19,7 +19,7 @@ header
     position: fixed;
 }
 
-#pizzae-container
+#menu
 {
     width: calc(100% - 400px);
     display: block;
@@ -28,7 +28,7 @@ header
     margin-top: 100px;
 }
 
-#pizzae
+#menu-items
 {
     table-layout: fixed;
     flex-wrap: wrap;
@@ -53,7 +53,7 @@ form
     transform: translateY(80px);
 }
 
-pizza
+menu-item
 {
     display: inline-block;
     width: 200px;
@@ -118,12 +118,12 @@ button{
     margin: 12px;
 }
 
-#orders{
+#basket-items{
     margin: 4px;
     display: grid;
 }
 
-order{
+basket-item{
     border-radius: .5rem .5rem .5rem .5rem;
     background-color: #eda55f;
     height: 1.5rem;
@@ -143,12 +143,12 @@ order{
     padding: 1rem;
 }
 
-#basket-empty{
+#basket-placeholder{
     text-align: center;
     padding: 1.5rem;
 }
 
-#basket-price{
+#basket-summary{
     border-top: white;
     border-top-style: dashed;
     border-top-width: 1px;
@@ -157,12 +157,12 @@ order{
     display: none;
 }
 
-#basket-price-text{
+#basket-summary-text{
     width: 180px;
     display: inline-block;
 }
 
-#basket-price-number{
+#basket-summary-number{
     width: 80px;
     display: inline-block;
     font-weight: 800;
@@ -174,17 +174,17 @@ order{
     margin-right: -20px;
 }
 
-.order-title{
+.basket-item-title{
     width: 200px;
     display: inline-block;
 }
 
-.order-price{
+.basket-item-price{
     width: 80px;
     display: inline-block;
 }
 
-.order-count{
+.basket-item-count{
     width: 30px;
     background-color: #ffffff;
     color: #000000;
@@ -193,7 +193,7 @@ order{
     display: inline-block;
 }
 
-.order-delete{
+.basket-item-delete{
     width: 28px;
     font-weight: 800;
     text-align: center;
@@ -246,7 +246,7 @@ footer
         display: inline-block;
     }
 
-    #pizzae-container
+    #menu
     {
         width: 100%;
     }
