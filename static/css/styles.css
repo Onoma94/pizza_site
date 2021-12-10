@@ -229,6 +229,7 @@ footer
     color: #ff0000;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
+    text-decoration: none;
     font-weight: 500;
     right: 16px;
 }

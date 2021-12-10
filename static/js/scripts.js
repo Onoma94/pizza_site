@@ -26,7 +26,6 @@ function fillOrders()
         for(var i = 0; i < stored_keys.length; i++)
         {
             var title = stored_keys[i].substring(1);
-            console.log(title);
             if(!(document.getElementById(stored_keys[i])))
             {
                 addPizzaElement(document.getElementById(title), localStorage.getItem(stored_keys[i]));
@@ -40,7 +39,6 @@ async function loadPizzae(url)
 {
     const response = await fetch(url);
     const pizzae = await response.json();
-    //localStorage.setItem("pizzae", JSON.stringify(pizzae));
     return pizzae;
 }
 
