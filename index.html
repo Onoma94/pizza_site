@@ -3,11 +3,23 @@
     <meta charset="UTF-8">
     <title>Pizza Govanni</title>
     <link rel="stylesheet" href="static/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <script type="text/javascript" src="static/js/scripts.js"></script>
+<script type="text/javascript">
+    window.onload = function(){
+    var hideMe = document.getElementById("basket");
+    document.onclick = function(e){
+       if(e.target.id !== "basket"){
+          hideMe.style.display = 'none';
+       }
+    };
+ };
+</script>
 <body onload="listPizzae()">
     <header>
         Pizza Govanni
+        <a href="javascript:void(0);" id="hidden-basket" onclick="basketResponse()">Twój koszyk</a>
     </header>
     <div id="basket">
         <div id="basket-header">Twój koszyk</div>
@@ -21,10 +33,12 @@
         </div>
     </div>
     <div id="pizzae-container">
-        <button class="sort" onclick="sortPizzaAZ()">Sortuj wg nazwy (A-Z)</button>
-        <button class="sort" onclick="sortPizzaZA()">(Z-A)</button>
-        <button class="sort" onclick="sortPizza09()">Sortuj wg ceny (od najtańszej)</button>
-        <button class="sort" onclick="sortPizza90()">(od najdroższej)</button>
+        <div id="filters">
+            <button class="sort" onclick="sortPizzaAZ()">Sortuj wg nazwy (A-Z)</button>
+            <button class="sort" onclick="sortPizzaZA()">(Z-A)</button>
+            <button class="sort" onclick="sortPizza09()">Sortuj wg ceny (od najtańszej)</button>
+            <button class="sort" onclick="sortPizza90()">(od najdroższej)</button>
+        </div>
         <form>
             <label for="ingredients">Filtruj składniki</label>
             <input type="text" id="ingredients" name="ingredients" oninput="filter()">

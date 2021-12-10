@@ -218,3 +218,35 @@ footer
     text-align: center;
     padding: 2px;
 }
+
+/* responsivity */
+
+#hidden-basket
+{
+    display: none;
+    margin-left: auto;
+    position: fixed;
+    color: #ff0000;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    right: 16px;
+}
+
+@media (max-width: 1100px) {
+    #basket
+    {
+        display: none;
+        transform: translateY(8px);
+    }
+
+    #hidden-basket
+    {
+        display: inline-block;
+    }
+
+    #pizzae-container
+    {
+        width: 100%;
+    }
+}

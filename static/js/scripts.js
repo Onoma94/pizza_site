@@ -17,19 +17,18 @@ function clearOrders()
 /* reloads the orders after page reload or refresh */
 function fillOrders()
 {
-    console.log(localStorage);
     if(localStorage.length == 0)
     {        /* do nothing */    }
     else
     {
+        console.log(Object.keys(localStorage));
         let stored_keys = Object.keys(localStorage).filter(k => k.startsWith('Ó'));
         for(var i = 0; i < stored_keys.length; i++)
         {
             var title = stored_keys[i].substring(1);
             console.log(title);
-            if(!(document.getElementById(title)))
+            if(!(document.getElementById(stored_keys[i])))
             {
-                console.log(document.getElementById(title));
                 addPizzaElement(document.getElementById(title), localStorage.getItem(stored_keys[i]));
             }
         }
@@ -186,7 +185,9 @@ async function listPizzae()
                 +'<button onClick="addPizzaButton(this);calculateOrders()">Zamów</button>';
             document.getElementById("pizzae").appendChild(newDiv);
         });
+    console.log("aaaa");
     fillOrders();
+    console.log("bbbb");
 }
 
 /* adds a div with pizza to the orders */
@@ -308,4 +309,11 @@ function filter()
             }
         }
     }
+}
+
+/*  */
+function basketResponse()
+{
+    var x = document.getElementById("basket");
+    x.style.display = "block";
 }
