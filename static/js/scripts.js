@@ -36,8 +36,9 @@ function fillBasket()
 async function loadMenuItems(url)
 {
     const response = await fetch(url);
-    const pizzae = await response.json();
-    return pizzae;
+    const menuItems = await response.json();
+    localStorage.setItem("menu", JSON.stringify(menuItems));
+    return menuItems;
 }
 
 /* initial menu items sorting; called in listPizzae() */
@@ -162,23 +163,24 @@ function sortPizza90()
 async function listMenuItems()
 {
     var newDiv;
-    var pizzae = await loadMenuItems('https://raw.githubusercontent.com/alexsimkovich/patronage/main/api/data.json');
-    pizzae = pizzae.sort(sortMenuItems);
-    pizzae.forEach(pizza => {
+    await loadMenuItems('https://raw.githubusercontent.com/alexsimkovich/patronage/main/api/data.json');
+    menuItems = JSON.parse(localStorage.getItem("menu"));
+    menuItems = menuItems.sort(sortMenuItems);
+    menuItems.forEach(pizza => {
             newDiv = document.createElement("menu-item");
             newDiv.setAttribute("id", pizza.title);
-            var ingredients1 = "";
+            let ingredients = "";
             pizza.ingredients.forEach(ingredient =>
                 {
-                    ingredients1 = ingredients1 + ingredient + ", ";
+                    ingredients = ingredients + ingredient + ", ";
                 }
             );
-            ingredients1 = ingredients1.slice(0,-2)
-            newDiv.innerHTML = '<img src="'+pizza.image+'">'
-                +'<div class="title-price"><div class="title">'+pizza.title+'</div>'
-                +'<div class="price">'+(pizza.price).toLocaleString("pl-PL")+'0 zł</div></div>'
-                +'<ingr>'+ingredients1+'</ingr>'
-                +'<button onClick="addPizzaButton(this);calculateBasket()">Zamów</button>';
+            ingredients = ingredients.slice(0,-2)
+            newDiv.innerHTML = `<img src="`+pizza.image+`">
+                <div class="title-price"><div class="title">`+pizza.title+`</div>
+                <div class="price">`+(pizza.price).toLocaleString("pl-PL")+`0 zł</div></div>
+                <ingr>`+ingredients+`</ingr>
+                <button onClick="addPizzaButton(this);calculateBasket()">Zamów</button>`;
             document.getElementById("menu-items").appendChild(newDiv);
         });
     fillBasket();
