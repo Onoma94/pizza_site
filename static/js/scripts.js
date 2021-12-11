@@ -19,7 +19,6 @@ function fillBasket()
 {
     if(!(localStorage.length == 0))
     {
-        console.log(Object.keys(localStorage));
         let stored_keys = Object.keys(localStorage).filter(k => k.startsWith('Ó'));
         for(var i = 0; i < stored_keys.length; i++)
         {
@@ -32,140 +31,48 @@ function fillBasket()
     }
 }
 
-/* loads pizzae from the JSON and returns ready array of pizza objects */
+/* on page load, loads the menu items and the basket items */
 async function loadMenuItems(url)
 {
     const response = await fetch(url);
-    const menuItems = await response.json();
+    let menuItems = await response.json();
     localStorage.setItem("menu", JSON.stringify(menuItems));
-    return menuItems;
+    sortMenuItems("a-z");
+    fillBasket();
 }
 
-/* initial menu items sorting; called in listPizzae() */
-function sortMenuItems(a, b)
+/* various sortings of menu items, using local storage */
+function sortMenuItems(sort)
 {
-    if (a.title < b.title)
+    let menuItems = JSON.parse(localStorage.getItem("menu"));
+    document.getElementById("menu-items").innerHTML = "";
+    switch(sort)
     {
-        return -1;
+        case "a-z":
+            localStorage.setItem("menu", JSON.stringify(menuItems.sort((a, b) =>
+                (a.title < b.title) ? -1 : ((a.title > b.title) ? 1 : 0))));
+            break;
+        case "z-a":
+            localStorage.setItem("menu", JSON.stringify(menuItems.sort((a, b) =>
+                (b.title < a.title) ? -1 : ((b.title > a.title) ? 1 : 0))));
+            break;
+        case "0-9":
+            localStorage.setItem("menu", JSON.stringify(menuItems.sort((a, b) =>
+                (a.price < b.price) ? -1 : ((a.price > b.price) ? 1 : 0))));
+            break;
+        case "9-0":
+            localStorage.setItem("menu", JSON.stringify(menuItems.sort((a, b) =>
+                (b.price < a.price) ? -1 : ((b.price > a.price) ? 1 : 0))));
+            break;
     }
-    if (a.title > b.title)
-    {
-        return 1;
-    }
-    return 0;
-}
-
-function sortPizzaAZ()
-{
-    var pizzae = document.getElementById("menu-items");
-    var run = true;
-    var stop, pizzae1;
-    while(run)
-    {
-        run = false;
-        pizzae1 = pizzae.getElementsByTagName("menu-item");
-        for (var i = 0; i < (pizzae1.length - 1); i++)
-        {
-            stop = false;
-            if (pizzae1[i].querySelector("div.title-price div.title").innerHTML.toLowerCase() > 
-            pizzae1[i + 1].querySelector("div.title-price div.title").innerHTML.toLowerCase()){
-                    stop = true;
-                    break;
-                    }
-        }
-        if (stop)
-        {
-            pizzae1[i].parentNode.insertBefore(pizzae1[i + 1], pizzae1[i]);
-            run = true;
-        }
-    }
-}
-
-function sortPizzaZA()
-{
-    var pizzae = document.getElementById("menu-items");
-    var run = true;
-    var stop, pizzae1;
-    while(run)
-    {
-        run = false;
-        pizzae1 = pizzae.getElementsByTagName("menu-item");
-        for (var i = 0; i < (pizzae1.length - 1); i++)
-        {
-            stop = false;
-            if (pizzae1[i].querySelector("div.title-price div.title").innerHTML.toLowerCase() < 
-                    pizzae1[i + 1].querySelector("div.title-price div.title").innerHTML.toLowerCase()){
-                    stop = true;
-                    break;
-                    }
-        }
-        if (stop)
-        {
-            pizzae1[i].parentNode.insertBefore(pizzae1[i + 1], pizzae1[i]);
-            run = true;
-        }
-    }
-}
-
-function sortPizza09()
-{
-    var pizzae = document.getElementById("menu-items");
-    var run = true;
-    var stop, pizzae1;
-    while(run)
-    {
-        run = false;
-        pizzae1 = pizzae.getElementsByTagName("menu-item");
-        for (var i = 0; i < (pizzae1.length - 1); i++)
-        {
-            stop = false;
-            if (pizzae1[i].querySelector("div.title-price div.price").innerHTML.toLowerCase() > 
-            pizzae1[i + 1].querySelector("div.title-price div.price").innerHTML.toLowerCase()){
-                    stop = true;
-                    break;
-                    }
-        }
-        if (stop)
-        {
-            pizzae1[i].parentNode.insertBefore(pizzae1[i + 1], pizzae1[i]);
-            run = true;
-        }
-    }
-}
-
-function sortPizza90()
-{
-    var pizzae = document.getElementById("menu-items");
-    var run = true;
-    var stop, pizzae1;
-    while(run)
-    {
-        run = false;
-        pizzae1 = pizzae.getElementsByTagName("menu-item");
-        for (var i = 0; i < (pizzae1.length - 1); i++)
-        {
-            stop = false;
-            if (pizzae1[i].querySelector("div.title-price div.price").innerHTML.toLowerCase() < 
-                    pizzae1[i + 1].querySelector("div.title-price div.price").innerHTML.toLowerCase()){
-                    stop = true;
-                    break;
-                    }
-        }
-        if (stop)
-        {
-            pizzae1[i].parentNode.insertBefore(pizzae1[i + 1], pizzae1[i]);
-            run = true;
-        }
-    }
+    listMenuItems();
 }
 
 /* listing available pizzae in the menu */
 async function listMenuItems()
 {
     var newDiv;
-    await loadMenuItems('https://raw.githubusercontent.com/alexsimkovich/patronage/main/api/data.json');
-    menuItems = JSON.parse(localStorage.getItem("menu"));
-    menuItems = menuItems.sort(sortMenuItems);
+    let menuItems = JSON.parse(localStorage.getItem("menu"));
     menuItems.forEach(pizza => {
             newDiv = document.createElement("menu-item");
             newDiv.setAttribute("id", pizza.title);
@@ -183,7 +90,6 @@ async function listMenuItems()
                 <button onClick="addPizzaButton(this);calculateBasket()">Zamów</button>`;
             document.getElementById("menu-items").appendChild(newDiv);
         });
-    fillBasket();
 }
 
 /* adds a div with pizza to the orders */
@@ -313,3 +219,6 @@ function showMobileBasket()
     var x = document.getElementById("basket");
     x.style.display = "block";
 }
+
+document.querySelector("body").addEventListener("load",
+ loadMenuItems(`https://raw.githubusercontent.com/alexsimkovich/patronage/main/api/data.json`));
