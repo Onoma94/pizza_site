@@ -1,5 +1,7 @@
 "use strict";
 
+let basket = {};
+
 /* clears basket (and by extension local storage) */
 function clearBasket()
 {
@@ -17,17 +19,14 @@ function clearBasket()
 /* reloads the basket after page reload or refresh */
 function fillBasket()
 {
-    if(!(localStorage.length == 0))
+    if (localStorage.getItem("basket"))
     {
-        let stored_keys = Object.keys(localStorage).filter(k => k.startsWith('Ó'));
-        for(var i = 0; i < stored_keys.length; i++)
-        {
-            var title = stored_keys[i].substring(1);
-            if(!(document.getElementById(stored_keys[i])))
+        basket = JSON.parse(localStorage.getItem("basket"));
+        Object.keys(basket).forEach(key =>
             {
-                addBasketItem(document.getElementById(title), localStorage.getItem(stored_keys[i]));
+                addBasketItem(key, basket[key]);
             }
-        }
+        )
     }
 }
 
@@ -87,64 +86,63 @@ async function listMenuItems()
                 <div class="title-price"><div class="title">`+pizza.title+`</div>
                 <div class="price">`+(pizza.price).toLocaleString("pl-PL")+`0 zł</div></div>
                 <ingr>`+ingredients+`</ingr>
-                <button onClick="addPizzaButton(this);calculateBasket()">Zamów</button>`;
+                <button onClick="addBasketItemFromAButton(this);calculateBasket()">Zamów</button>`;
             document.getElementById("menu-items").appendChild(newDiv);
         });
 }
 
 /* adds a div with pizza to the orders */
 /* the arguments are: the menu <pizza> element, and how many pizzae of this kind is being ordered */
-function addBasketItem(pizza, count)
+function addBasketItem(title, count)
 {
-    var title = pizza.querySelector("div.title-price div.title").innerHTML;
-    var price = pizza.querySelector("div.title-price div.price").innerHTML;
-        let newDiv = document.createElement("basket-item");
-        newDiv.setAttribute("id", "Ó"+title);
-        newDiv.innerHTML = '<div class="basket-item-title">'+title+'</div>'
-            + '<div class="basket-item-price">'+price+'</div>'
-            + '<div class="basket-item-count">' +count+ '</div>'
-            + '<div class="basket-item-delete" onClick="removeBasketItem(this);calculateBasket()">×</div>';
-        document.getElementById("basket-items").appendChild(newDiv);
-        if(!!document.getElementById("basket-placeholder"))
-        {
-            var basket_empty = document.getElementById("basket-placeholder");
-            basket_empty.style.display = "none";
-            var basket_price = document.getElementById("basket-summary");
-            basket_price.style.display = "block";
-        }
+    console.log(title+` `+count);
+    const menu = JSON.parse(localStorage.getItem("menu"));
+    let item = menu.filter(item => {return item.title == title })[0];
+    let newDiv = document.createElement("basket-item");
+    newDiv.setAttribute("id", "Ó"+item.title);
+    newDiv.innerHTML = `<div class="basket-item-title">`+item.title+`</div>
+            <div class="basket-item-price">`+item.price+`</div>
+            <div class="basket-item-count">` +count+ `</div>
+            <div class="basket-item-delete" onClick="removeBasketItem(this);calculateBasket()">×</div>`;
+    document.getElementById("basket-items").appendChild(newDiv);
+    if(!!document.getElementById("basket-placeholder"))
+    {
+        var basket_empty = document.getElementById("basket-placeholder");
+        basket_empty.style.display = "none";
+        var basket_price = document.getElementById("basket-summary");
+        basket_price.style.display = "block";
+    }
 }
 
 /* adds a pizza from the button in menu to the orders */
-function addPizzaButton(button)
+function addBasketItemFromAButton(button)
 {
-    var title = button.parentNode.id;
-    var count = 1;
-    if(!(document.getElementById("Ó"+title)))
+    let title = button.parentNode.id;
+    if (title in basket)
     {
-        addBasketItem(button.parentNode, count);
-        localStorage.setItem("Ó"+title, 1);
+        let count = ++basket[title];
+        document.getElementById("Ó"+title).querySelector("div.basket-item-count").innerHTML = count;
     }
     else
     {
-        var count = document.getElementById("Ó"+title).querySelector("div.basket-item-count").innerHTML;
-        count++;
-        document.getElementById("Ó"+title).querySelector("div.basket-item-count").innerHTML = count;
-        localStorage.setItem("Ó"+title, count);
+        basket[title] = 1;
+        addBasketItem(title, 1);
     }
+    localStorage.setItem("basket", JSON.stringify(basket));
+    
 }
 
-/* removes an item from the basket */
+/* counts down an item from the basket and removes upon reaching 0 */
 function removeBasketItem(button)
 {
-    var count = parseInt(button.parentNode
-        .querySelector("div.basket-item-count").innerHTML);
-    count--;
+    let title = (button.parentNode.id).substring(1);
+    let count = --basket[title];
     button.parentNode.querySelector("div.basket-item-count").innerHTML = count;
     if (!count)
     {
-        let order = button.parentNode;
-        order.parentNode.removeChild(order);
-        localStorage.removeItem(order);
+        let basketItem = button.parentNode;
+        basketItem.parentNode.removeChild(basketItem);
+        delete basket[title];
         if (document.getElementsByTagName("basket-item").length < 1)
         {
             var basket_empty = document.getElementById("basket-placeholder");
@@ -153,10 +151,7 @@ function removeBasketItem(button)
             basket_price.style.display = "none";
         }
     }
-    else
-    {
-        localStorage.setItem(button.parentNode.id,count);
-    }
+    localStorage.setItem("basket",JSON.stringify(basket));
 }
 
 
