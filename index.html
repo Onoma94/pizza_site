@@ -4,16 +4,6 @@
     <title>Pizza Govanni</title>
     <link rel="stylesheet" href="static/css/styles.css">
 </head>
-<script type="text/javascript">
-    window.onload = function(){
-    var hideMe = document.getElementById("basket");
-    document.onclick = function(e){
-       if(e.target.id !== "basket"){
-          hideMe.style.display = 'none';
-       }
-    };
- };
-</script>
 <body>
     <header>
         Pizza Govanni
@@ -32,10 +22,10 @@
     </div>
     <div id="menu">
         <div id="filters">
-            <button class="sort" onclick="sortPizzaAZ()">Sortuj wg nazwy (A-Z)</button>
-            <button class="sort" onclick="sortPizzaZA()">(Z-A)</button>
-            <button class="sort" onclick="sortPizza09()">Sortuj wg ceny (od najtańszej)</button>
-            <button class="sort" onclick="sortPizza90()">(od najdroższej)</button>
+            <button class="sort" onclick="sortMenuItems('a-z')">Sortuj wg nazwy (A-Z)</button>
+            <button class="sort" onclick="sortMenuItems('z-a')">(Z-A)</button>
+            <button class="sort" onclick="sortMenuItems('0-9')">Sortuj wg ceny (od najtańszej)</button>
+            <button class="sort" onclick="sortMenuItems('9-0')">(od najdroższej)</button>
         </div>
         <form>
             <label for="ingredients">Filtruj składniki</label>
