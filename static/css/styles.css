@@ -21,7 +21,7 @@ header
 
 #menu
 {
-    width: calc(100% - 400px);
+    width: 100%;
     display: block;
     margin-left: 8px;
     margin-right: 8px;
@@ -50,7 +50,8 @@ form
     background-color: #ad652f;
     color: #ffffff;
     position: fixed;
-    transform: translateY(80px);
+    display: none;
+    transform: translateY(8px);
 }
 
 menu-item
@@ -223,7 +224,7 @@ footer
 
 #hidden-basket
 {
-    display: none;
+    display: inline-block;
     margin-left: auto;
     position: fixed;
     color: #ff0000;
@@ -234,20 +235,20 @@ footer
     right: 16px;
 }
 
-@media (max-width: 1100px) {
+@media (min-width: 1100px) {
     #basket
     {
-        display: none;
-        transform: translateY(8px);
+        display: block;
+        transform: translateY(80px);
     }
 
     #hidden-basket
     {
-        display: inline-block;
+        display: none;
     }
 
     #menu
     {
-        width: 100%;
+        width: calc(100% - 400px);
     }
 }
