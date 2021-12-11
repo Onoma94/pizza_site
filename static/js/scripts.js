@@ -17,9 +17,7 @@ function clearBasket()
 /* reloads the basket after page reload or refresh */
 function fillBasket()
 {
-    if(localStorage.length == 0)
-    {        /* do nothing */    }
-    else
+    if(!(localStorage.length == 0))
     {
         console.log(Object.keys(localStorage));
         let stored_keys = Object.keys(localStorage).filter(k => k.startsWith('Ó'));
