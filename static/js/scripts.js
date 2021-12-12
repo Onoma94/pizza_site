@@ -57,12 +57,7 @@ async function listMenuItems()
             newDiv = document.createElement("menu-item");
             newDiv.setAttribute("id", pizza.title);
             let ingredients = "";
-            pizza.ingredients.forEach(ingredient =>
-                {
-                    ingredients = ingredients + ingredient + ", ";
-                }
-            );
-            ingredients = ingredients.slice(0,-2)
+            ingredients = pizza.ingredients.join(", ");
             newDiv.innerHTML = `<img src="`+pizza.image+`">
                 <div class="title-price"><div class="title">`+pizza.title+`</div>
                 <div class="price">`+(pizza.price).toLocaleString("pl-PL")+`0 zł</div></div>
