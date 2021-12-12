@@ -154,17 +154,11 @@ function clearBasket()
 /* calculating the total cost of the orders */
 function calculateBasket()
 {
-    var total_price = 0;
-    var a, b;
-    var prices = document.getElementsByClassName("basket-item-price");
-    var counts = document.getElementsByClassName("basket-item-count");
-    for (let index = 0; index < prices.length; index++) 
-    {
-        a = parseFloat(prices[index].innerHTML.replace(",",".").replace(" zł",""));
-        b = parseInt(counts[index].innerHTML);
-        total_price = total_price + a*b;
-    }
-    document.getElementById("basket-summary-number").innerHTML = total_price.toFixed(1).replace(".",",")+"0 zł";
+    let totalPrice = 0;
+    Object.keys(basket).forEach(key => {
+        totalPrice += basket[key][0] * basket[key][1]
+    });
+    document.getElementById("basket-summary-number").innerHTML = totalPrice.toFixed(1).replace(".",",")+"0 zł";
 }
 
 /* filtering menu items by ingredients */
