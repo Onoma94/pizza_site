@@ -12,9 +12,10 @@ function fillBasket()
 }
 
 /* on page load, loads the menu items and the basket items */
-async function loadMenuItems(url)
+async function loadMenuItems()
 {
-    const response = await fetch(url);
+    console.log("haloooooo");
+    const response = await fetch(`https://raw.githubusercontent.com/alexsimkovich/patronage/main/api/data.json`);
     let menuItems = response.json();
     localStorage.setItem("menu", JSON.stringify(menuItems));
     sortMenuItems(document.querySelector("#a-z"));
@@ -45,14 +46,13 @@ function sortMenuItems(sort)
                 (b.price < a.price) ? -1 : ((b.price > a.price) ? 1 : 0))));
             break;
     }
-    listMenuItems();
+    listMenuItems(menuItems);
 }
 
 /* listing available pizzae in the menu */
-async function listMenuItems()
+function listMenuItems(menuItems)
 {
     var newDiv;
-    let menuItems = JSON.parse(localStorage.getItem("menu"));
     menuItems.forEach(pizza => {
             newDiv = document.createElement("menu-item");
             newDiv.setAttribute("id", pizza.title);
@@ -159,37 +159,29 @@ function calculateBasket()
 /* filtering menu items by ingredients */
 function filter()
 {
-    var check, ingr;
-    let pizzae = document.getElementById("menu-items");
-    let ingredients = document.getElementById("ingredients").value.toLowerCase()
-        .split(', ');
-    let menuItems = pizzae.getElementsByTagName("menu-item");
-    for(let i = 0; i < menuItems.length; i++)
+    let input = document.getElementById("ingredients").value.toLowerCase()
+    .split(', ');
+    if(!(input[0] == ""))
     {
-        menuItems[i].style.display = "inline-block";
-    }
-    if (!(ingredients[0] == ""))
-    {
-        for (let i = 0; i < menuItems.length; i++)
+        var check;
+        const menuItems = JSON.parse(localStorage.getItem("menu"));
+        let filteredMenuItems = [];
+        for(let i = 0; i < menuItems.length; i++)
         {
             check = true;
-            ingr = menuItems[i].querySelector("ingr").innerText.split(', ');
-            ingredients.forEach( ingredient =>
-                check = check && ingr.find(element => { 
+            menuItems[i].ingredients.forEach( ingredient =>
+                check = check && input.find(element => { 
                     if(element.includes(ingredient))
                     {
                         return true;
                     }
                 }));
-            if(!check)
+            if(check)
             {
-                menuItems[i].style.display = "none";
-            }
-            else
-            {
-                menuItems[i].style.display = "inline-block";
+            filteredMenuItems.push(menuItems[i]);
             }
         }
+        listMenuItems(filteredMenuItems);
     }
 }
 
@@ -208,8 +200,7 @@ function hideMobileBasket()
 
 /* all them listeners */
 
-document.querySelector("body").addEventListener("load",
- loadMenuItems(`https://raw.githubusercontent.com/alexsimkovich/patronage/main/api/data.json`));
+document.querySelector("body").addEventListener("load", loadMenuItems);
 document.querySelector("#hidden-basket-btn").addEventListener("click", showMobileBasket);
 document.querySelector("#basket-clear").addEventListener("click", clearBasket);
 document.querySelector("#a-z").addEventListener("click", function(e) {sortMenuItems(this)});
@@ -217,3 +208,4 @@ document.querySelector("#z-a").addEventListener("click", function(e) {sortMenuIt
 document.querySelector("#zeronine").addEventListener("click", function(e) {sortMenuItems(this)});
 document.querySelector("#ninezero").addEventListener("click", function(e) {sortMenuItems(this)});
 document.querySelector(".basket-hide").addEventListener("click", hideMobileBasket);
+document.querySelector("input").addEventListener("input",filter);
