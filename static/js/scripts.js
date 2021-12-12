@@ -2,20 +2,6 @@
 
 let basket = {};
 
-/* clears basket (and by extension local storage) */
-function clearBasket()
-{
-    localStorage.clear();
-    document.querySelectorAll('basket-item').forEach(item => item.remove());
-    if (document.getElementsByTagName("basket-item").length < 1)
-    {
-        var basket_empty = document.getElementById("basket-placeholder");
-        basket_empty.style.display = "block";
-        var basket_price = document.getElementById("basket-placeholder");
-        basket_price.style.display = "none";
-    }
-}
-
 /* reloads the basket after page reload or refresh */
 function fillBasket()
 {
@@ -36,7 +22,7 @@ async function loadMenuItems(url)
     const response = await fetch(url);
     let menuItems = await response.json();
     localStorage.setItem("menu", JSON.stringify(menuItems));
-    sortMenuItems("a-z");
+    sortMenuItems(document.querySelector("#a-z"));
     fillBasket();
 }
 
@@ -45,7 +31,7 @@ function sortMenuItems(sort)
 {
     let menuItems = JSON.parse(localStorage.getItem("menu"));
     document.getElementById("menu-items").innerHTML = "";
-    switch(sort)
+    switch(sort.id)
     {
         case "a-z":
             localStorage.setItem("menu", JSON.stringify(menuItems.sort((a, b) =>
@@ -55,11 +41,11 @@ function sortMenuItems(sort)
             localStorage.setItem("menu", JSON.stringify(menuItems.sort((a, b) =>
                 (b.title < a.title) ? -1 : ((b.title > a.title) ? 1 : 0))));
             break;
-        case "0-9":
+        case "zeronine":
             localStorage.setItem("menu", JSON.stringify(menuItems.sort((a, b) =>
                 (a.price < b.price) ? -1 : ((a.price > b.price) ? 1 : 0))));
             break;
-        case "9-0":
+        case "ninezero":
             localStorage.setItem("menu", JSON.stringify(menuItems.sort((a, b) =>
                 (b.price < a.price) ? -1 : ((b.price > a.price) ? 1 : 0))));
             break;
@@ -86,16 +72,21 @@ async function listMenuItems()
                 <div class="title-price"><div class="title">`+pizza.title+`</div>
                 <div class="price">`+(pizza.price).toLocaleString("pl-PL")+`0 zł</div></div>
                 <ingr>`+ingredients+`</ingr>
-                <button onClick="addBasketItemFromAButton(this);calculateBasket()">Zamów</button>`;
+                <button class="menu-item-btn">Zamów</button>`;
             document.getElementById("menu-items").appendChild(newDiv);
         });
+    document.querySelectorAll(".menu-item-btn").forEach( button =>
+            button.addEventListener("click", function(e){addBasketItemFromAButton(this)}));
+
+    document.querySelectorAll(".menu-item-btn").forEach( button =>
+            button.addEventListener("click", calculateBasket));
+
 }
 
 /* adds a div with pizza to the orders */
 /* the arguments are: the menu <pizza> element, and how many pizzae of this kind is being ordered */
 function addBasketItem(title, count)
 {
-    console.log(title+` `+count);
     const menu = JSON.parse(localStorage.getItem("menu"));
     let item = menu.filter(item => {return item.title == title })[0];
     let newDiv = document.createElement("basket-item");
@@ -103,7 +94,9 @@ function addBasketItem(title, count)
     newDiv.innerHTML = `<div class="basket-item-title">`+item.title+`</div>
             <div class="basket-item-price">`+item.price+`</div>
             <div class="basket-item-count">` +count+ `</div>
-            <div class="basket-item-delete" onClick="removeBasketItem(this);calculateBasket()">×</div>`;
+            <div class="basket-item-delete">×</div>`;
+    newDiv.querySelector(".basket-item-delete").addEventListener("click", function(e){removeBasketItem(this)});
+    newDiv.querySelector(".basket-item-delete").addEventListener("click", calculateBasket);
     document.getElementById("basket-items").appendChild(newDiv);
     if(!!document.getElementById("basket-placeholder"))
     {
@@ -112,13 +105,14 @@ function addBasketItem(title, count)
         var basket_price = document.getElementById("basket-summary");
         basket_price.style.display = "block";
     }
+    
 }
 
 /* adds a pizza from the button in menu to the orders */
 function addBasketItemFromAButton(button)
 {
     let title = button.parentNode.id;
-    if (title in basket)
+    if (!!(basket[title]))
     {
         let count = ++basket[title];
         document.getElementById("Ó"+title).querySelector("div.basket-item-count").innerHTML = count;
@@ -145,15 +139,26 @@ function removeBasketItem(button)
         delete basket[title];
         if (document.getElementsByTagName("basket-item").length < 1)
         {
-            var basket_empty = document.getElementById("basket-placeholder");
-            basket_empty.style.display = "block";
-            var basket_price = document.getElementById("basket-summary");
-            basket_price.style.display = "none";
+            var basketEmpty = document.getElementById("basket-placeholder");
+            basketEmpty.style.display = "block";
+            var basketPrice = document.getElementById("basket-summary");
+            basketPrice.style.display = "none";
         }
     }
     localStorage.setItem("basket",JSON.stringify(basket));
 }
 
+/* clears basket (and by extension local storage) */
+function clearBasket()
+{
+    localStorage.removeItem("basket");
+    basket = {};
+    document.querySelectorAll('basket-item').forEach(item => item.remove());
+    var basketEmpty = document.getElementById("basket-placeholder");
+    basketEmpty.style.display = "block";
+    var basketPrice = document.getElementById("basket-summary");
+    basketPrice.style.display = "none";
+}
 
 /* calculating the total cost of the orders */
 function calculateBasket()
@@ -215,5 +220,14 @@ function showMobileBasket()
     x.style.display = "block";
 }
 
+/* all them listeners */
+
 document.querySelector("body").addEventListener("load",
  loadMenuItems(`https://raw.githubusercontent.com/alexsimkovich/patronage/main/api/data.json`));
+document.querySelector("#hidden-basket").addEventListener("click", showMobileBasket);
+document.querySelector("#basket-clear").addEventListener("click", clearBasket);
+document.querySelector("#a-z").addEventListener("click", function(e) {sortMenuItems(this)});
+document.querySelector("#z-a").addEventListener("click", function(e) {sortMenuItems(this)});
+document.querySelector("#zeronine").addEventListener("click", function(e) {sortMenuItems(this)});
+document.querySelector("#ninezero").addEventListener("click", function(e) {sortMenuItems(this)});
+

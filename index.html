@@ -7,7 +7,7 @@
 <body>
     <header>
         Pizza Govanni
-        <a href="javascript:void(0);" id="hidden-basket" onclick="showMobileBasket()">Twój koszyk</a>
+        <a href="javascript:void(0);" id="hidden-basket">Twój koszyk</a>
     </header>
     <div id="basket">
         <div id="basket-header">Twój koszyk</div>
@@ -17,15 +17,15 @@
         <div id="basket-summary">
             <div id="basket-summary-text">Razem</div>
             <div id="basket-summary-number">0,00 zł</div>
-            <button id="basket-clear" onclick="clearBasket()">Wyczyść</div>
+            <button id="basket-clear">Wyczyść</div>
         </div>
     </div>
     <div id="menu">
         <div id="filters">
-            <button class="sort" onclick="sortMenuItems('a-z')">Sortuj wg nazwy (A-Z)</button>
-            <button class="sort" onclick="sortMenuItems('z-a')">(Z-A)</button>
-            <button class="sort" onclick="sortMenuItems('0-9')">Sortuj wg ceny (od najtańszej)</button>
-            <button class="sort" onclick="sortMenuItems('9-0')">(od najdroższej)</button>
+            <button class="sort" id="a-z">Sortuj wg nazwy (A-Z)</button>
+            <button class="sort" id="z-a">(Z-A)</button>
+            <button class="sort" id="zeronine">Sortuj wg ceny (od najtańszej)</button>
+            <button class="sort" id="ninezero">(od najdroższej)</button>
         </div>
         <form>
             <label for="ingredients">Filtruj składniki</label>
