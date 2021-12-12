@@ -12,13 +12,12 @@ function fillBasket()
 }
 
 /* on page load, loads the menu items and the basket items */
-async function loadMenuItems()
+async function loadMenuItems(url)
 {
-    const response = await fetch(`https://raw.githubusercontent.com/alexsimkovich/patronage/main/api/data.json`);
-    let menuItems = response.json();
-    localStorage.setItem("menu", JSON.stringify(menuItems));
-    sortMenuItems(document.querySelector("#a-z"));
-    fillBasket();
+    fetch(url).then((response) => response.json())
+        .then((response) => localStorage.setItem("menu", JSON.stringify(response)))
+        .then(() => sortMenuItems(document.querySelector("#a-z")))
+        .then(() => fillBasket());
 }
 
 /* various sortings of menu items, using local storage */
@@ -200,7 +199,7 @@ function hideMobileBasket()
 
 /* all them listeners */
 
-document.querySelector("body").addEventListener("load", loadMenuItems);
+document.querySelector("body").addEventListener("load", loadMenuItems('https://raw.githubusercontent.com/alexsimkovich/patronage/main/api/data.json'));
 document.querySelector("#hidden-basket-btn").addEventListener("click", showMobileBasket);
 document.querySelector("#basket-clear").addEventListener("click", clearBasket);
 document.querySelector("#a-z").addEventListener("click", function(e) {sortMenuItems(this)});
