@@ -14,7 +14,6 @@ function fillBasket()
 /* on page load, loads the menu items and the basket items */
 async function loadMenuItems()
 {
-    console.log("haloooooo");
     const response = await fetch(`https://raw.githubusercontent.com/alexsimkovich/patronage/main/api/data.json`);
     let menuItems = response.json();
     localStorage.setItem("menu", JSON.stringify(menuItems));
@@ -92,6 +91,7 @@ function addBasketItem(button)
     
 }
 
+/* renders basket items */
 function listBasketItems()
 {
     document.getElementById("basket-items").innerHTML = "";
