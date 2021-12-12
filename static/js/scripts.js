@@ -1,6 +1,8 @@
 "use strict";
 
 let basket = {};
+let menu = [];
+let filteredMenu = [];
 
 /* reloads the basket after page reload or refresh */
 function fillBasket()
@@ -15,7 +17,7 @@ function fillBasket()
 async function loadMenuItems(url)
 {
     fetch(url).then((response) => response.json())
-        .then((response) => localStorage.setItem("menu", JSON.stringify(response)))
+        .then((response) => menu = response /*localStorage.setItem("menu", JSON.stringify(response))*/)
         .then(() => sortMenuItems(document.querySelector("#a-z")))
         .then(() => fillBasket());
 }
@@ -23,28 +25,28 @@ async function loadMenuItems(url)
 /* various sortings of menu items, using local storage */
 function sortMenuItems(sort)
 {
-    let menuItems = JSON.parse(localStorage.getItem("menu"));
+    //let menuItems = JSON.parse(localStorage.getItem("menu"));
     document.getElementById("menu-items").innerHTML = "";
     switch(sort.id)
     {
         case "a-z":
-            localStorage.setItem("menu", JSON.stringify(menuItems.sort((a, b) =>
-                (a.title < b.title) ? -1 : ((a.title > b.title) ? 1 : 0))));
+            menu.sort((a, b) =>
+                (a.title < b.title) ? -1 : ((a.title > b.title) ? 1 : 0));
             break;
         case "z-a":
-            localStorage.setItem("menu", JSON.stringify(menuItems.sort((a, b) =>
-                (b.title < a.title) ? -1 : ((b.title > a.title) ? 1 : 0))));
+            menu.sort((a, b) =>
+                (b.title < a.title) ? -1 : ((b.title > a.title) ? 1 : 0));
             break;
         case "zeronine":
-            localStorage.setItem("menu", JSON.stringify(menuItems.sort((a, b) =>
-                (a.price < b.price) ? -1 : ((a.price > b.price) ? 1 : 0))));
+            menu.sort((a, b) =>
+                (a.price < b.price) ? -1 : ((a.price > b.price) ? 1 : 0));
             break;
         case "ninezero":
-            localStorage.setItem("menu", JSON.stringify(menuItems.sort((a, b) =>
-                (b.price < a.price) ? -1 : ((b.price > a.price) ? 1 : 0))));
+            menu.sort((a, b) =>
+                (b.price < a.price) ? -1 : ((b.price > a.price) ? 1 : 0));
             break;
     }
-    listMenuItems(menuItems);
+    listMenuItems(menu);
 }
 
 /* listing available pizzae in the menu */
@@ -156,31 +158,37 @@ function calculateBasket()
 }
 
 /* filtering menu items by ingredients */
-function filter()
+function filterItems()
 {
     let input = document.getElementById("ingredients").value.toLowerCase()
     .split(', ');
+    console.log(input);
+    console.log("uwaga sprawdzam");
+    document.getElementById("menu-items").innerHTML="";
     if(!(input[0] == ""))
     {
         var check;
-        const menuItems = JSON.parse(localStorage.getItem("menu"));
-        let filteredMenuItems = [];
-        for(let i = 0; i < menuItems.length; i++)
+        filteredMenu = [];
+        for(let i = 0; i < menu.length; i++)
         {
             check = true;
-            menuItems[i].ingredients.forEach( ingredient =>
-                check = check && input.find(element => { 
-                    if(element.includes(ingredient))
+            input.forEach( input_element =>
+                check = check && menu[i].ingredients.find(ingredient => { 
+                    if(ingredient.includes(input_element))
                     {
                         return true;
                     }
                 }));
             if(check)
             {
-            filteredMenuItems.push(menuItems[i]);
+            filteredMenu.push(menu[i]);
             }
         }
-        listMenuItems(filteredMenuItems);
+        listMenuItems(filteredMenu);
+    }
+    else
+    {
+        listMenuItems(menu);
     }
 }
 
@@ -207,4 +215,4 @@ document.querySelector("#z-a").addEventListener("click", function(e) {sortMenuIt
 document.querySelector("#zeronine").addEventListener("click", function(e) {sortMenuItems(this)});
 document.querySelector("#ninezero").addEventListener("click", function(e) {sortMenuItems(this)});
 document.querySelector(".basket-hide").addEventListener("click", hideMobileBasket);
-document.querySelector("input").addEventListener("input",filter);
+document.querySelector("#ingredients").addEventListener("keyup",filterItems);
