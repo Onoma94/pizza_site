@@ -203,14 +203,40 @@ function hideMobileBasket()
         .classList.remove("mobile-basket-show");
 }
 
-/* all them listeners */
+function showSortMenu()
+{
+    console.log("show me the way");
+    document.querySelector("ul")
+        .classList.remove("display-hide");
+}
 
+function hideSortMenu()
+{
+    console.log("hiding all the stars");
+    document.querySelector("ul")
+        .classList.add("display-hide");
+}
+
+/* ALL THEM LISTENERS */
+
+/* onload */
 document.querySelector("body").addEventListener("load", loadMenuItems('https://raw.githubusercontent.com/alexsimkovich/patronage/main/api/data.json'));
+
+/* basket */
 document.querySelector("#hidden-basket-btn").addEventListener("click", showMobileBasket);
 document.querySelector("#basket-clear").addEventListener("click", clearBasket);
+document.querySelector(".basket-hide").addEventListener("click", hideMobileBasket);
+
+/* sort menu dropdown */
+document.querySelector("#sortings-header").addEventListener("click", showSortMenu);
+document.querySelectorAll(".sort").forEach(sort =>
+    sort.addEventListener("click", hideSortMenu));
+
+/* various sort types */
 document.querySelector("#a-z").addEventListener("click", function(e) {sortMenuItems(this)});
 document.querySelector("#z-a").addEventListener("click", function(e) {sortMenuItems(this)});
 document.querySelector("#zeronine").addEventListener("click", function(e) {sortMenuItems(this)});
 document.querySelector("#ninezero").addEventListener("click", function(e) {sortMenuItems(this)});
-document.querySelector(".basket-hide").addEventListener("click", hideMobileBasket);
+
+/* filtering */
 document.querySelector("#ingredients").addEventListener("keyup",filterItems);
