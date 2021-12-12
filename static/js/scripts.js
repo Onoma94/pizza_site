@@ -15,7 +15,7 @@ function fillBasket()
 async function loadMenuItems(url)
 {
     const response = await fetch(url);
-    let menuItems = await response.json();
+    let menuItems = response.json();
     localStorage.setItem("menu", JSON.stringify(menuItems));
     sortMenuItems(document.querySelector("#a-z"));
     fillBasket();
@@ -160,20 +160,20 @@ function calculateBasket()
 function filter()
 {
     var check, ingr;
-    var pizzae = document.getElementById("menu-items");
-    var ingredients = document.getElementById("ingredients").value.toLowerCase()
+    let pizzae = document.getElementById("menu-items");
+    let ingredients = document.getElementById("ingredients").value.toLowerCase()
         .split(', ');
-    var pizzae1 = pizzae.getElementsByTagName("menu-item");
-    for(var i= 0; i < pizzae1.length; i++)
+    let menuItems = pizzae.getElementsByTagName("menu-item");
+    for(let i = 0; i < menuItems.length; i++)
     {
-        pizzae1[i].style.display = "inline-block";
+        menuItems[i].style.display = "inline-block";
     }
     if (!(ingredients[0] == ""))
     {
-        for (var i = 0; i < pizzae1.length; i++)
+        for (let i = 0; i < menuItems.length; i++)
         {
             check = true;
-            ingr = pizzae1[i].querySelector("ingr").innerText.split(', ');
+            ingr = menuItems[i].querySelector("ingr").innerText.split(', ');
             ingredients.forEach( ingredient =>
                 check = check && ingr.find(element => { 
                     if(element.includes(ingredient))
@@ -183,11 +183,11 @@ function filter()
                 }));
             if(!check)
             {
-                pizzae1[i].style.display = "none";
+                menuItems[i].style.display = "none";
             }
             else
             {
-                pizzae1[i].style.display = "inline-block";
+                menuItems[i].style.display = "inline-block";
             }
         }
     }
