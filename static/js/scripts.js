@@ -2,7 +2,6 @@
 
 let basket = {};
 let menu = [];
-let filteredMenu = [];
 
 /* reloads the basket after page reload or refresh */
 function fillBasket()
@@ -165,8 +164,6 @@ function filterItems()
 {
     let input = document.getElementById("ingredients").value.toLowerCase()
     .split(', ');
-    console.log(input);
-    console.log("uwaga sprawdzam");
     document.getElementById("menu-items").innerHTML="";
     var check;
     for(let i = 0; i < menu.length; i++)
