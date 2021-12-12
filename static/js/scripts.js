@@ -7,12 +7,7 @@ function fillBasket()
 {
     if (localStorage.getItem("basket"))
     {
-        basket = JSON.parse(localStorage.getItem("basket"));
-        Object.keys(basket).forEach(key =>
-            {
-                addBasketItem(key, basket[key]);
-            }
-        )
+        listBasketItems();
     }
 }
 
@@ -76,74 +71,70 @@ async function listMenuItems()
             document.getElementById("menu-items").appendChild(newDiv);
         });
     document.querySelectorAll(".menu-item-btn").forEach( button =>
-            button.addEventListener("click", function(e){addBasketItemFromAButton(this)}));
+            button.addEventListener("click", function(e){addBasketItem(this)}));
 
     document.querySelectorAll(".menu-item-btn").forEach( button =>
             button.addEventListener("click", calculateBasket));
 
 }
 
-/* adds a div with pizza to the orders */
-/* the arguments are: the menu <pizza> element, and how many pizzae of this kind is being ordered */
-function addBasketItem(title, count)
-{
-    const menu = JSON.parse(localStorage.getItem("menu"));
-    let item = menu.filter(item => {return item.title == title })[0];
-    let newDiv = document.createElement("basket-item");
-    newDiv.setAttribute("id", "Ó"+item.title);
-    newDiv.innerHTML = `<div class="basket-item-title">`+item.title+`</div>
-            <div class="basket-item-price">`+item.price.toLocaleString("pl-PL")+` zł</div>
-            <div class="basket-item-count">` +count+ `</div>
-            <div class="basket-item-delete">×</div>`;
-    newDiv.querySelector(".basket-item-delete").addEventListener("click", function(e){removeBasketItem(this)});
-    newDiv.querySelector(".basket-item-delete").addEventListener("click", calculateBasket);
-    document.getElementById("basket-items").appendChild(newDiv);
-    if(!!document.getElementById("basket-placeholder"))
-    {
-        var basket_empty = document.getElementById("basket-placeholder");
-        basket_empty.style.display = "none";
-        var basket_price = document.getElementById("basket-summary");
-        basket_price.style.display = "block";
-    }
-    
-}
-
 /* adds a pizza from the button in menu to the orders */
-function addBasketItemFromAButton(button)
+function addBasketItem(button)
 {
     let title = button.parentNode.id;
-    if (!!(basket[title]))
+    if(!(basket[title]))
     {
-        let count = ++basket[title];
-        document.getElementById("Ó"+title).querySelector("div.basket-item-count").innerHTML = count;
+        const menu = JSON.parse(localStorage.getItem("menu"));
+        let item = menu.filter(item => {return item.title == title })[0];
+        basket[title] = [1, item.price];
     }
     else
     {
-        basket[title] = 1;
-        addBasketItem(title, 1);
+        basket[title][0]++;
     }
+    listBasketItems();
     localStorage.setItem("basket", JSON.stringify(basket));
     
+}
+
+function listBasketItems()
+{
+    document.getElementById("basket-items").innerHTML = "";
+    Object.keys(basket).forEach(key => {
+        if(basket[key][0] > 0)
+        {
+            let newDiv = document.createElement("basket-item");
+            newDiv.setAttribute("id", "Ó"+key);
+            newDiv.innerHTML = `<div class="basket-item-title">`+key+`</div>
+                <div class="basket-item-price">`+basket[key][1].toLocaleString("pl-PL")+` zł</div>
+                <div class="basket-item-count">`+basket[key][0]+`</div>
+                <div class="basket-item-delete">×</div>`;
+            newDiv.querySelector(".basket-item-delete").addEventListener("click", function(e){removeBasketItem(this)});
+            newDiv.querySelector(".basket-item-delete").addEventListener("click", calculateBasket);
+            document.getElementById("basket-items").appendChild(newDiv);
+        }
+    });
+    if (document.querySelectorAll("basket-item").length > 0)
+    {
+        document.getElementById("basket-placeholder")
+            .classList.add("display-hide");
+        document.querySelector(".basket-summary")
+            .classList.remove("display-hide");
+    }
 }
 
 /* counts down an item from the basket and removes upon reaching 0 */
 function removeBasketItem(button)
 {
     let title = (button.parentNode.id).substring(1);
-    let count = --basket[title];
-    button.parentNode.querySelector("div.basket-item-count").innerHTML = count;
-    if (!count)
+    --basket[title][0];
+    listBasketItems();
+    if (document.getElementsByTagName("basket-item").length < 1)
     {
-        let basketItem = button.parentNode;
-        basketItem.parentNode.removeChild(basketItem);
-        delete basket[title];
-        if (document.getElementsByTagName("basket-item").length < 1)
-        {
-            var basketEmpty = document.getElementById("basket-placeholder");
-            basketEmpty.style.display = "block";
-            var basketPrice = document.getElementById("basket-summary");
-            basketPrice.style.display = "none";
-        }
+        document.getElementById("basket-placeholder")
+            .classList.remove("display-hide");
+        document.querySelector(".basket-summary")
+            .classList.add("display-hide");
     }
     localStorage.setItem("basket",JSON.stringify(basket));
 }
@@ -154,10 +145,10 @@ function clearBasket()
     localStorage.removeItem("basket");
     basket = {};
     document.querySelectorAll('basket-item').forEach(item => item.remove());
-    var basketEmpty = document.getElementById("basket-placeholder");
-    basketEmpty.style.display = "block";
-    var basketPrice = document.getElementById("basket-summary");
-    basketPrice.style.display = "none";
+    document.getElementById("basket-placeholder")
+        .classList.remove("display-hide");
+    document.querySelector(".basket-summary")
+        .classList.add("display-hide");
 }
 
 /* calculating the total cost of the orders */
@@ -216,21 +207,21 @@ function filter()
 /* shows basket after clicking "Twój koszyk" */
 function showMobileBasket()
 {
-    var x = document.getElementById("basket");
-    x.style.display = "block";
+    document.querySelector(".basket")
+        .classList.add("mobile-basket-show");
 }
 
 function hideMobileBasket()
 {
-    var x = document.getElementById("basket");
-    x.style.display = "none";
+    document.querySelector(".basket")
+        .classList.remove("mobile-basket-show");
 }
 
 /* all them listeners */
 
 document.querySelector("body").addEventListener("load",
  loadMenuItems(`https://raw.githubusercontent.com/alexsimkovich/patronage/main/api/data.json`));
-document.querySelector("#hidden-basket").addEventListener("click", showMobileBasket);
+document.querySelector("#hidden-basket-btn").addEventListener("click", showMobileBasket);
 document.querySelector("#basket-clear").addEventListener("click", clearBasket);
 document.querySelector("#a-z").addEventListener("click", function(e) {sortMenuItems(this)});
 document.querySelector("#z-a").addEventListener("click", function(e) {sortMenuItems(this)});
