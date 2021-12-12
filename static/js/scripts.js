@@ -8,6 +8,7 @@ function fillBasket()
 {
     if (localStorage.getItem("basket"))
     {
+        basket = JSON.parse(localStorage.getItem("basket"));
         listBasketItems();
     }
 }
@@ -16,7 +17,7 @@ function fillBasket()
 async function loadMenuItems(url)
 {
     fetch(url).then((response) => response.json())
-        .then((response) => menu = response.map(item => ({...item, filtered: true})) /*localStorage.setItem("menu", JSON.stringify(response))*/)
+        .then((response) => menu = response.map(item => ({...item, filtered: true})))
         .then(() => sortMenuItems(document.querySelector("#a-z")))
         .then(() => fillBasket());
 }
@@ -97,6 +98,7 @@ function addBasketItem(button)
 /* renders basket items */
 function listBasketItems()
 {
+    console.log("pilnuj koszyka");
     document.getElementById("basket-items").innerHTML = "";
     Object.keys(basket).forEach(key => {
         if(basket[key][0] > 0)
