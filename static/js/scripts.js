@@ -17,7 +17,7 @@ function fillBasket()
 async function loadMenuItems(url)
 {
     fetch(url).then((response) => response.json())
-        .then((response) => menu = response /*localStorage.setItem("menu", JSON.stringify(response))*/)
+        .then((response) => menu = response.map(item => ({...item, filtered: true})) /*localStorage.setItem("menu", JSON.stringify(response))*/)
         .then(() => sortMenuItems(document.querySelector("#a-z")))
         .then(() => fillBasket());
 }
@@ -54,16 +54,19 @@ function listMenuItems(menuItems)
 {
     var newDiv;
     menuItems.forEach(pizza => {
-            newDiv = document.createElement("menu-item");
-            newDiv.setAttribute("id", pizza.title);
-            let ingredients = "";
-            ingredients = pizza.ingredients.join(", ");
-            newDiv.innerHTML = `<img src="`+pizza.image+`">
-                <div class="title-price"><div class="title">`+pizza.title+`</div>
-                <div class="price">`+(pizza.price).toLocaleString("pl-PL")+`0 zł</div></div>
-                <ingr>`+ingredients+`</ingr>
-                <button class="menu-item-btn">Zamów</button>`;
-            document.getElementById("menu-items").appendChild(newDiv);
+            if (pizza.filtered == true)
+            {
+                newDiv = document.createElement("menu-item");
+                newDiv.setAttribute("id", pizza.title);
+                let ingredients = "";
+                ingredients = pizza.ingredients.join(", ");
+                newDiv.innerHTML = `<img src="`+pizza.image+`">
+                    <div class="title-price"><div class="title">`+pizza.title+`</div>
+                    <div class="price">`+(pizza.price).toLocaleString("pl-PL")+`0 zł</div></div>
+                    <ingr>`+ingredients+`</ingr>
+                    <button class="menu-item-btn">Zamów</button>`;
+                document.getElementById("menu-items").appendChild(newDiv);
+            }
         });
     document.querySelectorAll(".menu-item-btn").forEach( button =>
             button.addEventListener("click", function(e){addBasketItem(this)}));
@@ -165,31 +168,27 @@ function filterItems()
     console.log(input);
     console.log("uwaga sprawdzam");
     document.getElementById("menu-items").innerHTML="";
-    if(!(input[0] == ""))
+    var check;
+    for(let i = 0; i < menu.length; i++)
     {
-        var check;
-        filteredMenu = [];
-        for(let i = 0; i < menu.length; i++)
+        check = true;
+        input.forEach( input_element =>
+            check = check && menu[i].ingredients.find(ingredient => { 
+                if(ingredient.includes(input_element))
+                {
+                    return true;
+                }
+            }));
+        if(check)
         {
-            check = true;
-            input.forEach( input_element =>
-                check = check && menu[i].ingredients.find(ingredient => { 
-                    if(ingredient.includes(input_element))
-                    {
-                        return true;
-                    }
-                }));
-            if(check)
-            {
-            filteredMenu.push(menu[i]);
-            }
+            menu[i].filtered = true;
         }
-        listMenuItems(filteredMenu);
+        else
+        {
+            menu[i].filtered = false;
+        }
     }
-    else
-    {
-        listMenuItems(menu);
-    }
+    listMenuItems(menu);
 }
 
 /* shows basket after clicking "Twój koszyk" */
