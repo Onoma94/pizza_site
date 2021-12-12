@@ -51,7 +51,7 @@ form
     color: #ffffff;
     position: fixed;
     display: none;
-    transform: translateY(8px);
+    top: 8px;
 }
 
 menu-item
@@ -176,7 +176,7 @@ basket-item{
 }
 
 .basket-item-title{
-    width: 200px;
+    width: 180px;
     display: inline-block;
 }
 
@@ -226,20 +226,31 @@ footer
 {
     display: inline-block;
     margin-left: auto;
+    margin-top: 0px;
     position: fixed;
-    color: #ff0000;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
-    text-decoration: none;
     font-weight: 500;
     right: 16px;
+}
+
+.basket-hide{
+    width: 28px;
+    font-weight: 800;
+    text-align: center;
+    border-radius: .5rem .5rem .5rem .5rem;
+    background-color: #D00000;
+    display: inline-block;
+    cursor: pointer;
+    margin-left: 10px;
+    margin-right: 0px;
 }
 
 @media (min-width: 1100px) {
     #basket
     {
         display: block;
-        transform: translateY(80px);
+        top: 80px;
     }
 
     #hidden-basket
@@ -250,5 +261,10 @@ footer
     #menu
     {
         width: calc(100% - 400px);
+    }
+
+    .basket-hide
+    {
+        display: none;
     }
 }

@@ -92,7 +92,7 @@ function addBasketItem(title, count)
     let newDiv = document.createElement("basket-item");
     newDiv.setAttribute("id", "Ó"+item.title);
     newDiv.innerHTML = `<div class="basket-item-title">`+item.title+`</div>
-            <div class="basket-item-price">`+item.price+`</div>
+            <div class="basket-item-price">`+item.price.toLocaleString("pl-PL")+` zł</div>
             <div class="basket-item-count">` +count+ `</div>
             <div class="basket-item-delete">×</div>`;
     newDiv.querySelector(".basket-item-delete").addEventListener("click", function(e){removeBasketItem(this)});
@@ -220,6 +220,12 @@ function showMobileBasket()
     x.style.display = "block";
 }
 
+function hideMobileBasket()
+{
+    var x = document.getElementById("basket");
+    x.style.display = "none";
+}
+
 /* all them listeners */
 
 document.querySelector("body").addEventListener("load",
@@ -230,4 +236,4 @@ document.querySelector("#a-z").addEventListener("click", function(e) {sortMenuIt
 document.querySelector("#z-a").addEventListener("click", function(e) {sortMenuItems(this)});
 document.querySelector("#zeronine").addEventListener("click", function(e) {sortMenuItems(this)});
 document.querySelector("#ninezero").addEventListener("click", function(e) {sortMenuItems(this)});
-
+document.querySelector(".basket-hide").addEventListener("click", hideMobileBasket);
