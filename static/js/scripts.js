@@ -206,14 +206,14 @@ function hideMobileBasket()
 function showSortMenu()
 {
     console.log("show me the way");
-    document.querySelector("ul")
+    document.querySelector(".sortings-list")
         .classList.remove("display-hide");
 }
 
 function hideSortMenu()
 {
     console.log("hiding all the stars");
-    document.querySelector("ul")
+    document.querySelector(".sortings-list")
         .classList.add("display-hide");
 }
 
