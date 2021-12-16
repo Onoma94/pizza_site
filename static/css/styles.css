@@ -210,12 +210,7 @@ basket-item{
 {
     position: relative;
     display: inline-block;
-    width: 220px;
-    font-size: 16px;
-    background-color: #ad652f;
-    color: #ffffff;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    cursor: pointer;
     margin-left: 8px;
 }
 
@@ -227,22 +222,9 @@ basket-item{
 
 .sortings-list
 {
-    background-color: #ad652f;
-    position: absolute;
-    width: 220px;
-    z-index: 1;
-}
-
-.sort{
-
-    /*border-width: 1px;
-    border-style: solid;*/
     cursor: pointer;
-    background-color: #eda55f;
-    border-radius: .5rem .5rem .5rem .5rem;
-    margin: 8px;
-    padding: 1rem;
 }
+
 
 footer
 {

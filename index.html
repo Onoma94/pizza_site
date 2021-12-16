@@ -21,13 +21,13 @@
     </div>
     <div id="menu">
         <div id="sortings">
-            <div id="sortings-header">Sortuj wg...</div>
-            <div class="sortings-list display-hide">
-                <div class="sort" id="a-z">nazwy (A-Z)</div>
-                <div class="sort" id="z-a">nazwy (Z-A)</div>
-                <div class="sort" id="zeronine">ceny (od najtańszej)</div>
-                <div class="sort" id="ninezero">ceny (od najdroższej)</div>
-            </div>
+            <label for="sortings">Sortuj według</label>
+            <select class="sortings-list" autocomplete="off">
+                <option id="a-z" selected>nazwy (A-Z)</option>
+                <option id="z-a">nazwy (Z-A)</option>
+                <option id="zeronine">ceny (od najtańszej)</option>
+                <option id="ninezero">ceny (od najdroższej)</option>
+            </select>
         </div>
         <form>
             <label for="ingredients">Filtruj składniki</label>

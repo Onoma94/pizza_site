@@ -18,16 +18,17 @@ async function loadMenuItems(url)
 {
     fetch(url).then((response) => response.json())
         .then((response) => menu = response.map(item => ({...item, filtered: true})))
-        .then(() => sortMenuItems(document.querySelector("#a-z")))
+        .then(() => sortMenuItems())
         .then(() => fillBasket());
 }
 
 /* various sortings of menu items, using local storage */
-function sortMenuItems(sort)
+function sortMenuItems()
 {
     //let menuItems = JSON.parse(localStorage.getItem("menu"));
     document.getElementById("menu-items").innerHTML = "";
-    switch(sort.id)
+    let selection = document.querySelector(".sortings-list");
+    switch(selection.options[selection.selectedIndex].id)
     {
         case "a-z":
             menu.sort((a, b) =>
@@ -203,20 +204,6 @@ function hideMobileBasket()
         .classList.remove("mobile-basket-show");
 }
 
-function showSortMenu()
-{
-    console.log("show me the way");
-    document.querySelector(".sortings-list")
-        .classList.remove("display-hide");
-}
-
-function hideSortMenu()
-{
-    console.log("hiding all the stars");
-    document.querySelector(".sortings-list")
-        .classList.add("display-hide");
-}
-
 /* ALL THEM LISTENERS */
 
 /* onload */
@@ -228,15 +215,7 @@ document.querySelector("#basket-clear").addEventListener("click", clearBasket);
 document.querySelector(".basket-hide").addEventListener("click", hideMobileBasket);
 
 /* sort menu dropdown */
-document.querySelector("#sortings-header").addEventListener("click", showSortMenu);
-document.querySelectorAll(".sort").forEach(sort =>
-    sort.addEventListener("click", hideSortMenu));
-
-/* various sort types */
-document.querySelector("#a-z").addEventListener("click", function(e) {sortMenuItems(this)});
-document.querySelector("#z-a").addEventListener("click", function(e) {sortMenuItems(this)});
-document.querySelector("#zeronine").addEventListener("click", function(e) {sortMenuItems(this)});
-document.querySelector("#ninezero").addEventListener("click", function(e) {sortMenuItems(this)});
+document.querySelector(".sortings-list").onchange = sortMenuItems;
 
 /* filtering */
 document.querySelector("#ingredients").addEventListener("keyup",filterItems);
