@@ -22,10 +22,10 @@ async function loadMenuItems(url)
         .then(() => fillBasket());
 }
 
-/* various sortings of menu items, using local storage */
+/* various sortings of menu items, using global variable */
 function sortMenuItems()
 {
-    //let menuItems = JSON.parse(localStorage.getItem("menu"));
+
     document.getElementById("menu-items").innerHTML = "";
     let selection = document.querySelector(".sortings-list");
     switch(selection.options[selection.selectedIndex].id)
@@ -83,7 +83,6 @@ function addBasketItem(button)
     let title = button.parentNode.id;
     if(!(basket[title]))
     {
-        const menu = JSON.parse(localStorage.getItem("menu"));
         let item = menu.filter(item => {return item.title == title })[0];
         basket[title] = [1, item.price];
     }
@@ -99,7 +98,6 @@ function addBasketItem(button)
 /* renders basket items */
 function listBasketItems()
 {
-    console.log("pilnuj koszyka");
     document.getElementById("basket-items").innerHTML = "";
     Object.keys(basket).forEach(key => {
         if(basket[key][0] > 0)
